@@ -2,59 +2,14 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMemo, useState } from 'react';
+import copy from '@/data/copy';
 
 type PanelId = 'sla' | 'channels' | 'rituals' | null;
 
-const CHANNELS = [
-  // 'Portal del proyecto',
-  'Email',
-  'Chat interno',
-  'Videocall',
-];
-
-const RITUALS = [
-  'Kickoff inicial con alcance y riesgos',
-  'Update async cada 48-72hs',
-  'Revision de hitos con feedback',
-  'Cierre con handoff y soporte',
-];
-
-const KPIS = [
-  { label: 'SLA respuesta', value: '<2hs' },
-  { label: 'Frecuencia update', value: '48-72hs' },
-  { label: 'Trazabilidad', value: '100%' },
-  { label: 'Canales activos', value: '3' },
-];
-
-const PANEL_CONTENT: Record<Exclude<PanelId, null>, { title: string; bullets: string[]; meta: string[] }> = {
-  sla: {
-    title: 'Regla operativa SLA',
-    bullets: [
-      'Respuesta inicial en menos de 2hs en horario operativo.',
-      'Bloqueos criticos se escalan el mismo dia.',
-      'Si hay dependencia externa, se informa ETA y plan alterno.',
-    ],
-    meta: ['Tiempos de respuesta inciertos', 'Bloqueos criticos sin priorizacion'],
-  },
-  channels: {
-    title: 'Uso recomendado por canal',
-    bullets: [
-      // 'Portal: decisiones y entregables versionados.',
-      'Email: resumenes ejecutivos y aprobaciones.',
-      'Chat interno: bloqueos cortos y coordinacion rapida.',
-    ],
-    meta: ['Mensajes dispersos entre canales', 'Decisiones sin trazabilidad'],
-  },
-  rituals: {
-    title: 'Cadencia de trabajo',
-    bullets: [
-      'Cada ritual deja un output concreto y verificable.',
-      'El avance se mide por hitos, no por mensajes enviados.',
-      'El cierre incluye handoff y plan de soporte.',
-    ],
-    meta: ['Reuniones sin entregable claro', 'Avance medido por percepcion'],
-  },
-};
+const CHANNELS = copy.communication.channels.active;
+const RITUALS = copy.communication.rituals;
+const KPIS = copy.communication.kpis;
+const PANEL_CONTENT: Record<Exclude<PanelId, null>, { title: string; bullets: string[]; meta: string[] }> = copy.communication.panels;
 
 interface InteractiveCardProps {
   panelId: Exclude<PanelId, null>;
@@ -125,7 +80,7 @@ function InteractiveCard({ panelId, kicker, title, description, tone = 'accent',
                 ))}
               </ul>
               <p className="mono" style={{ margin: '0.8rem 0 0', fontSize: '0.62rem', color: accentColor, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                Problemas resueltos
+                {copy.communication.section.resolvedProblemsLabel}
               </p>
               <ul style={{ margin: '0.45rem 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: '0.42rem' }}>
                 {content.meta.map((item) => (
@@ -170,7 +125,7 @@ function InteractiveCard({ panelId, kicker, title, description, tone = 'accent',
                   }}
                 >
                   <span aria-hidden="true">*</span>
-                  Interactivo
+                  {copy.communication.section.interactiveLabel}
                 </span>
               </div>
               <h3 style={{ margin: '0.45rem 0 0', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontSize: '1.6rem' }}>{title}</h3>
@@ -198,10 +153,10 @@ export default function CommunicationBentoSection() {
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="mono text-xs tracking-widest uppercase" style={{ color: 'var(--accent)' }}>Comunicacion</span>
-          <h2 className="text-4xl mt-2" style={{ fontFamily: 'var(--font-display)' }}>Todo documentado. Nada se pierde.</h2>
+          <span className="mono text-xs tracking-widest uppercase" style={{ color: 'var(--accent)' }}>{copy.communication.section.kicker}</span>
+          <h2 className="text-4xl mt-2" style={{ fontFamily: 'var(--font-display)' }}>{copy.communication.section.title}</h2>
           <p className="mt-3" style={{ color: 'var(--text-secondary)' }}>
-            La comunicacion del proyecto tiene estructura. Sin depender de que alguien responda un WhatsApp.
+            {copy.communication.section.subtitle}
           </p>
         </motion.header>
 
@@ -231,13 +186,13 @@ export default function CommunicationBentoSection() {
             />
             <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <span className="mono" style={{ fontSize: '0.66rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent)' }}>
-                Hub de comunicacion
+                {copy.communication.section.hubKicker}
               </span>
               <h3 className="text-2xl md:text-3xl" style={{ margin: 0, fontFamily: 'var(--font-display)', lineHeight: 1.1, color: 'var(--text-primary)' }}>
-                Un solo lugar para decidir, seguir y cerrar.
+                {copy.communication.section.hubTitle}
               </h3>
               <p className="text-sm md:text-base" style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '48ch' }}>
-                Nada queda suelto: decisiones, bloqueos y avances se registran en el mismo flujo. Evitamos perdida de contexto y tiempos muertos.
+                {copy.communication.section.hubBody}
               </p>
               <p className="mono" style={{ margin: 0, fontSize: '0.68rem', color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                 {channelsPreview}
@@ -258,7 +213,7 @@ export default function CommunicationBentoSection() {
             }}
           >
             <span className="mono" style={{ fontSize: '0.66rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
-              KPIs operativos
+              {copy.communication.section.kpisKicker}
             </span>
             <div className="grid grid-cols-2 gap-2.5 mt-3">
               {KPIS.map((kpi) => (
@@ -283,9 +238,9 @@ export default function CommunicationBentoSection() {
           <div className="md:col-span-3 xl:col-span-4">
             <InteractiveCard
               panelId="sla"
-              kicker="SLA"
-              title="< 2hs"
-              description="Tiempo objetivo de primera respuesta durante horario operativo."
+              kicker={copy.communication.cards.sla.kicker}
+              title={copy.communication.cards.sla.title}
+              description={copy.communication.cards.sla.description}
               tone="teal"
               activePanel={activePanel}
               setActivePanel={setActivePanel}
@@ -295,9 +250,9 @@ export default function CommunicationBentoSection() {
           <div className="md:col-span-3 xl:col-span-4">
             <InteractiveCard
               panelId="channels"
-              kicker="Canales"
-              title="4 canales activos"
-              description="Cada canal tiene un uso claro para evitar ruido y perdida de contexto."
+              kicker={copy.communication.cards.channels.kicker}
+              title={copy.communication.cards.channels.title}
+              description={copy.communication.cards.channels.description}
               activePanel={activePanel}
               setActivePanel={setActivePanel}
             />
@@ -306,9 +261,9 @@ export default function CommunicationBentoSection() {
           <div className="md:col-span-6 xl:col-span-4">
             <InteractiveCard
               panelId="rituals"
-              kicker="Rituales"
-              title={`${RITUALS.length} hitos de comunicacion`}
-              description="Ritmo de trabajo con outputs concretos en cada fase."
+              kicker={copy.communication.cards.rituals.kicker}
+              title={`${RITUALS.length}${copy.communication.cards.ritualsTitleSuffix}`}
+              description={copy.communication.cards.rituals.description}
               activePanel={activePanel}
               setActivePanel={setActivePanel}
             />

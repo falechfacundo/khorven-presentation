@@ -4,23 +4,20 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { SITE } from '@config/site';
 import type { HubParams } from '@lib/params';
-import type { ServiceConfig } from '@config/services';
+import copy, { type ServiceConfig } from '@/data/copy';
 
 interface Props {
   params: HubParams;
   service: ServiceConfig;
 }
 
-const TRUST_BADGES = [
-  'Entrega garantizada',
-  '30 dias de soporte',
-];
-
 export default function HeroSection({ params, service }: Props) {
   const containerRef = useRef<HTMLElement | null>(null);
   const isInView = useInView(containerRef, { once: false, margin: '-80px' });
   const isWorkana = params?.platform === 'workana';
-  const primaryCtaLabel = isWorkana ? 'ACEPTAR PROPUESTA' : service.ctaLabel;
+  const heroByPlatform = copy.hero[service.id].es;
+  const heroContent = isWorkana ? heroByPlatform.workana : heroByPlatform.default;
+  const primaryCtaLabel = heroContent.ctaLabel;
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -29,7 +26,7 @@ export default function HeroSection({ params, service }: Props) {
 
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.25]);
-  const words = service.headline.split(' ');
+  const words = heroContent.title.split(' ');
 
   return (
     <section id="hero" ref={containerRef} style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', background: 'var(--gradient-hero)' }}>
@@ -88,7 +85,7 @@ export default function HeroSection({ params, service }: Props) {
             className="mono"
             style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.85rem' }}
           >
-            Ad Astra - Digital Studio
+            {heroContent.studioLabel}
           </motion.span>
 
           <h1 style={{ fontSize: 'clamp(3rem,7vw,6rem)', lineHeight: 1.05, margin: 0 }}>
@@ -115,7 +112,7 @@ export default function HeroSection({ params, service }: Props) {
                   backgroundClip: 'text',
                 }}
               >
-                {' '}para {params.client}.
+                {heroContent.clientPrefix}{params.client}.
               </motion.span>
             )}
           </h1>
@@ -126,11 +123,11 @@ export default function HeroSection({ params, service }: Props) {
             transition={{ duration: 0.5, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
             style={{ color: 'var(--text-secondary)', fontSize: '1.25rem', lineHeight: 1.7, maxWidth: '42rem', margin: 0 }}
           >
-            {service.subheadline}
+            {heroContent.subtitle}
           </motion.p>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.65rem' }}>
-            {TRUST_BADGES.map((badge, i) => (
+            {copy.guarantees.hero.map((badge, i) => (
               <motion.span
                 key={badge}
                 initial={{ opacity: 0, y: 16 }}
@@ -238,7 +235,7 @@ export default function HeroSection({ params, service }: Props) {
                   textDecoration: 'none',
                 }}
               >
-                Ver portfolio -&gt;
+                {heroContent.portfolioLabel}
               </a>
             )}
           </motion.div>

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import PortalPreviewMock from '@components/react/PortalPreviewMock';
 import { SITE } from '@config/site';
+import copy from '@/data/copy';
 
 export default function PortalSection() {
   return (
@@ -15,11 +16,11 @@ export default function PortalSection() {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className="mono" style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.75rem' }}>
-            Sistema de gestion
+            {copy.portal.section.kicker}
           </span>
-          <h2 style={{ margin: '0.7rem 0 0.75rem', fontSize: '2.2rem' }}>Tu proyecto, organizado desde el dia uno</h2>
+          <h2 style={{ margin: '0.7rem 0 0.75rem', fontSize: '2.2rem' }}>{copy.portal.section.title}</h2>
           <p style={{ margin: 0, color: 'var(--text-secondary)', maxWidth: '42rem' }}>
-            No mas actualizaciones perdidas en WhatsApp. Todo en un portal dedicado: roadmap, archivos, pagos y comunicacion centralizada.
+            {copy.portal.section.subtitle}
           </p>
         </motion.header>
 
@@ -33,10 +34,10 @@ export default function PortalSection() {
           style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}
         >
           <p className="mono" style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.8rem' }}>
-            Acceso disponible en portal.ad-astra.me al confirmar el proyecto
+            {copy.portal.section.accessNote}
           </p>
           <a href={SITE.portalUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
-            Ver el portal -&gt;
+            {copy.portal.section.linkLabel}
           </a>
         </motion.div>
       </div>

@@ -1,8 +1,8 @@
 ---
 import { getFAQs } from '@data/faq';
+import copy, { type ServiceConfig } from '@/data/copy';
 import FAQAccordion from '@components/react/FAQAccordion';
 import SectionSpringIn from '@components/react/SectionSpringIn';
-import type { ServiceConfig } from '@config/services';
 
 interface Props {
   service: ServiceConfig;
@@ -24,11 +24,11 @@ const faqs = getFAQs(service.id);
           border:1px solid color-mix(in srgb, var(--accent) 30%, transparent);
         "
       >
-        FAQ
+        {copy.faq.section.kicker}
       </span>
-      <h2 class="text-4xl md:text-5xl mt-4 leading-tight" style="font-family:var(--font-display)">Preguntas frecuentes</h2>
+      <h2 class="text-4xl md:text-5xl mt-4 leading-tight" style="font-family:var(--font-display)">{copy.faq.section.title}</h2>
       <p class="mt-4 max-w-2xl text-sm md:text-base" style="color:var(--text-secondary)">
-        Las dudas mas comunes, respondidas antes de que las hagas.
+        {copy.faq.section.subtitle}
       </p>
     </div>
     </SectionSpringIn>

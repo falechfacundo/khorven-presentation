@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import * as Icons from 'lucide-react';
 import { DELIVERABLES } from '@data/deliverables';
-import type { ServiceConfig } from '@config/services';
+import copy, { type ServiceConfig } from '@/data/copy';
 import type { ElementType } from 'react';
 import { useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
 import { useRef, useState } from 'react';
@@ -12,11 +12,7 @@ interface Props {
   service: ServiceConfig;
 }
 
-const GUARANTEES = [
-  { text: 'Testeado antes de entrega', sub: 'Revisamos todo antes de cerrar el proyecto' },
-  { text: 'Revisiones incluidas', sub: 'Minimo 2 rondas de feedback sin cargo' },
-  { text: 'Soporte 30 dias', sub: 'Cualquier problema post-entrega lo resolvemos' },
-];
+const GUARANTEES = copy.guarantees.deliverables;
 
 interface DeliverableCardProps {
   title: string;
@@ -34,29 +30,7 @@ interface CardInsight {
   after: string;
 }
 
-const CARD_INSIGHTS: Record<string, CardInsight> = {
-  'Performance optimizada': {
-    problem: 'El sitio tarda en cargar y se pierde atencion en los primeros segundos.',
-    outcome: 'Mejor retencion inicial y navegacion mas fluida desde la primera vista.',
-    eta: 'Checklist tecnico desde la primera iteracion.',
-    before: 'Carga lenta, rebote alto y paginas pesadas.',
-    after: 'Carga agil, experiencia estable y recorrido continuo.',
-  },
-  'SEO on-page': {
-    problem: 'Paginas sin estructura semantica ni metadata consistente.',
-    outcome: 'Arquitectura clara para indexacion y mejor lectura por buscadores.',
-    eta: 'Implementado durante desarrollo + verificacion en entrega.',
-    before: 'Contenido sin contexto SEO y headings desordenados.',
-    after: 'Metadatos, headings y jerarquia listos para indexar.',
-  },
-  'Captacion de leads': {
-    problem: 'Consultas sin trazabilidad y formularios desconectados.',
-    outcome: 'Leads ordenados y conectados al flujo comercial en tiempo real.',
-    eta: 'Configurado en etapa de integraciones.',
-    before: 'Leads dispersos en correo y mensajes sin seguimiento.',
-    after: 'Leads centralizados con origen y estado visible.',
-  },
-};
+const CARD_INSIGHTS: Record<string, CardInsight> = copy.deliverables.insights;
 
 function DeliverableCard({ title, desc, icon, index, total }: DeliverableCardProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -164,7 +138,7 @@ function DeliverableCard({ title, desc, icon, index, total }: DeliverableCardPro
               color: 'var(--text-muted)',
             }}
           >
-            Entregable {(index + 1).toString().padStart(2, '0')}
+            {copy.deliverables.section.deliverablePrefix} {(index + 1).toString().padStart(2, '0')}
           </div>
           <div
             style={{
@@ -210,16 +184,16 @@ function DeliverableCard({ title, desc, icon, index, total }: DeliverableCardPro
                     fontFamily: 'var(--font-display)',
                   }}
                 >
-                  Impacto del entregable
+                  {copy.deliverables.section.impactTitle}
                 </h3>
                 <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.82rem', lineHeight: 1.55 }}>
-                  <strong style={{ color: 'var(--text-primary)' }}>Problema:</strong> {insight.problem}
+                  <strong style={{ color: 'var(--text-primary)' }}>{copy.deliverables.section.impactProblemLabel}</strong> {insight.problem}
                 </p>
                 <p style={{ margin: '0.42rem 0 0', color: 'var(--text-secondary)', fontSize: '0.82rem', lineHeight: 1.55 }}>
-                  <strong style={{ color: 'var(--text-primary)' }}>Resultado:</strong> {insight.outcome}
+                  <strong style={{ color: 'var(--text-primary)' }}>{copy.deliverables.section.impactOutcomeLabel}</strong> {insight.outcome}
                 </p>
                 <p style={{ margin: '0.42rem 0 0', color: 'var(--text-secondary)', fontSize: '0.82rem', lineHeight: 1.55 }}>
-                  <strong style={{ color: 'var(--text-primary)' }}>Tiempo:</strong> {insight.eta}
+                  <strong style={{ color: 'var(--text-primary)' }}>{copy.deliverables.section.impactEtaLabel}</strong> {insight.eta}
                 </p>
               </motion.div>
             ) : (
@@ -245,7 +219,7 @@ function DeliverableCard({ title, desc, icon, index, total }: DeliverableCardPro
                 <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.65 }}>{desc}</p>
                 {insight && (
                   <p className="mono" style={{ margin: '0.68rem 0 0', color: 'var(--accent)', fontSize: '0.62rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                    Hover o tap para ver impacto
+                    {copy.deliverables.section.impactHint}
                   </p>
                 )}
               </motion.div>
@@ -270,10 +244,10 @@ export default function DeliverablesSection({ service }: Props) {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className="mono" style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.75rem' }}>
-            Entregables
+            {copy.deliverables.section.kicker}
           </span>
-          <h2 style={{ margin: '0.7rem 0 0.75rem', fontSize: '2.2rem' }}>Que recibis exactamente</h2>
-          <p style={{ margin: 0, color: 'var(--text-secondary)' }}>Sin letra chica. Todo lo que forma parte del proyecto.</p>
+          <h2 style={{ margin: '0.7rem 0 0.75rem', fontSize: '2.2rem' }}>{copy.deliverables.section.title}</h2>
+          <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{copy.deliverables.section.subtitle}</p>
         </motion.header>
 
         <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', marginTop: '2.8rem' }}>
@@ -283,7 +257,7 @@ export default function DeliverablesSection({ service }: Props) {
         </div>
 
         <div style={{ marginTop: '3.5rem', borderTop: '1px solid var(--bg-border)', paddingTop: '2.2rem' }}>
-          <h3 style={{ margin: 0, fontSize: '1.6rem' }}>Garantias incluidas</h3>
+          <h3 style={{ margin: 0, fontSize: '1.6rem' }}>{copy.deliverables.section.guaranteesTitle}</h3>
           <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', marginTop: '1.2rem' }}>
             {GUARANTEES.map((g, i) => (
               <motion.article

@@ -1,0 +1,618 @@
+{
+  "metadata": {
+    "generatedAt": "2026-05-27",
+    "scope": [
+      "../client-showcase-overview",
+      "presentation-hub"
+    ],
+    "confidence": "HIGH",
+    "sourceRefs": {
+      "showcaseEntry": "../client-showcase-overview/src/pages/Index.tsx#L75",
+      "showcaseTaxonomy": "../client-showcase-overview/src/data/industry-config.ts#L6",
+      "showcaseCatalogLoader": "../client-showcase-overview/src/data/templates.tsx#L16",
+      "onboardingParams": "src/lib/params.ts#L20",
+      "onboardingServices": "src/config/services.ts#L12"
+    }
+  },
+  "services": [
+    {
+      "canonicalName": "landing",
+      "aliases": [
+        "Landing Page",
+        "Landing Pages",
+        "Web Profesional"
+      ],
+      "showcaseDescription": {
+        "text": "Landing Pages appears as an explicit project filter/category and local-business web solution framing.",
+        "refs": [
+          "../client-showcase-overview/src/components/ProjectFilterTabs.tsx#L30",
+          "../client-showcase-overview/src/pages/Index.tsx#L251"
+        ],
+        "status": "[IMPLEMENTADO]",
+        "confidence": "HIGH"
+      },
+      "onboardingDescription": {
+        "text": "Tu presencia online que convierte. Diseno, velocidad y estructura pensados para transformar visitas en clientes desde el primer dia.",
+        "refs": [
+          "src/config/services.ts#L16"
+        ],
+        "status": "[IMPLEMENTADO]",
+        "confidence": "HIGH"
+      },
+      "semanticMatch": "PARTIAL",
+      "divergences": [
+        "Showcase describes broad local-business web systems, onboarding narrows to conversion-focused landing narrative.",
+        "Showcase copy includes agendas/inventarios in hero, which expands beyond pure landing scope."
+      ]
+    },
+    {
+      "canonicalName": "ecommerce",
+      "aliases": [
+        "eCommerce",
+        "Tienda completa",
+        "Store"
+      ],
+      "showcaseDescription": {
+        "text": "No explicit ecommerce service card/filter in showcase main taxonomy; ecommerce-like content appears only inside large modal section generator templates, not as primary navigation/service.",
+        "refs": [
+          "../client-showcase-overview/src/components/ProjectFilterTabs.tsx#L23",
+          "../client-showcase-overview/src/components/ModalTemplate.tsx#L500"
+        ],
+        "status": "[INFERIDO]",
+        "confidence": "MEDIUM"
+      },
+      "onboardingDescription": {
+        "text": "Tu tienda lista para vender desde el dia uno. Setup completo, integrado y testeado.",
+        "refs": [
+          "src/config/services.ts#L24"
+        ],
+        "status": "[IMPLEMENTADO]",
+        "confidence": "HIGH"
+      },
+      "semanticMatch": "LOW",
+      "divergences": [
+        "Onboarding offers ecommerce as core service variant, showcase does not expose equivalent first-class service surface.",
+        "Potential funnel discontinuity for ecommerce prospects arriving from showcase."
+      ]
+    },
+    {
+      "canonicalName": "bot",
+      "aliases": [
+        "Bot & Automatizacion",
+        "IA real",
+        "NLP avanzado"
+      ],
+      "showcaseDescription": {
+        "text": "No explicit bot/automation service in showcase principal sections; AI appears as icon mentions and generic capability cues.",
+        "refs": [
+          "../client-showcase-overview/src/pages/Index.tsx#L325",
+          "../client-showcase-overview/src/components/ProjectFilterTabs.tsx#L23"
+        ],
+        "status": "[INFERIDO]",
+        "confidence": "MEDIUM"
+      },
+      "onboardingDescription": {
+        "text": "Automatiza tu negocio con IA real. Un sistema que trabaja mientras vos no. Sin hype, con resultados medibles.",
+        "refs": [
+          "src/config/services.ts#L32"
+        ],
+        "status": "[IMPLEMENTADO]",
+        "confidence": "HIGH"
+      },
+      "semanticMatch": "LOW",
+      "divergences": [
+        "Onboarding positions bot as explicit service; showcase lacks equivalent service taxonomy and CTA path.",
+        "Risk of expectation mismatch when bot proposal is sent after showcase discovery."
+      ]
+    },
+    {
+      "canonicalName": "saas-product",
+      "aliases": [
+        "SaaS Products",
+        "Dashboards",
+        "Webapp"
+      ],
+      "showcaseDescription": {
+        "text": "SaaS appears as first-class filter and catalog projectType normalized from webapp/dashboard.",
+        "refs": [
+          "../client-showcase-overview/src/components/ProjectFilterTabs.tsx#L29",
+          "../client-showcase-overview/src/data/templates.tsx#L46"
+        ],
+        "status": "[IMPLEMENTADO]",
+        "confidence": "HIGH"
+      },
+      "onboardingDescription": {
+        "text": "No explicit saas service variant. Closest equivalents are ecommerce and bot. Industry=saas exists as param but does not alter audited copy.",
+        "refs": [
+          "src/lib/params.ts#L4",
+          "src/components/react/HeroSection.tsx#L129"
+        ],
+        "status": "[IMPLEMENTADO]",
+        "confidence": "HIGH"
+      },
+      "semanticMatch": "PARTIAL",
+      "divergences": [
+        "SaaS is product taxonomy in showcase but not a canonical onboarding service type."
+      ]
+    }
+  ],
+  "featuresCapabilities": [
+    {
+      "canonicalName": "online-booking-24-7",
+      "aliases": [
+        "turnos online",
+        "reserva 24/7",
+        "agenda online"
+      ],
+      "surfaces": [
+        "showcase.use-cases",
+        "showcase.hero"
+      ],
+      "descriptions": [
+        {
+          "surface": "showcase",
+          "text": "Sistema online capta turnos 24/7",
+          "ref": "../client-showcase-overview/src/components/UseCases.tsx#L15"
+        },
+        {
+          "surface": "showcase",
+          "text": "Agendas online... te hacen ganar tiempo y clientes",
+          "ref": "../client-showcase-overview/src/pages/Index.tsx#L251"
+        }
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    },
+    {
+      "canonicalName": "inventory-control",
+      "aliases": [
+        "control de stock",
+        "inventario en tiempo real"
+      ],
+      "surfaces": [
+        "showcase.use-cases",
+        "showcase.hero"
+      ],
+      "descriptions": [
+        {
+          "surface": "showcase",
+          "text": "Control de stock en tiempo real",
+          "ref": "../client-showcase-overview/src/components/UseCases.tsx#L33"
+        },
+        {
+          "surface": "showcase",
+          "text": "inventarios ... ganar tiempo y clientes",
+          "ref": "../client-showcase-overview/src/pages/Index.tsx#L251"
+        }
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    },
+    {
+      "canonicalName": "responsive-design",
+      "aliases": [
+        "diseno responsive",
+        "100% responsive"
+      ],
+      "surfaces": [
+        "showcase.faq",
+        "onboarding.deliverables"
+      ],
+      "descriptions": [
+        {
+          "surface": "showcase",
+          "text": "Todas nuestras webs son 100% responsive",
+          "ref": "../client-showcase-overview/src/components/FAQ.tsx#L33"
+        },
+        {
+          "surface": "onboarding",
+          "text": "Diseno responsive - Adaptado a todos los dispositivos",
+          "ref": "src/data/deliverables.ts#L12"
+        }
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    },
+    {
+      "canonicalName": "seo-on-page",
+      "aliases": [
+        "SEO on-page",
+        "metadatos"
+      ],
+      "surfaces": [
+        "onboarding.deliverables"
+      ],
+      "descriptions": [
+        {
+          "surface": "onboarding",
+          "text": "SEO on-page - Estructura y metadatos configurados correctamente",
+          "ref": "src/data/deliverables.ts#L14"
+        }
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    },
+    {
+      "canonicalName": "ai-automation",
+      "aliases": [
+        "IA real",
+        "NLP avanzado",
+        "GPT-4o"
+      ],
+      "surfaces": [
+        "onboarding.services",
+        "onboarding.deliverables",
+        "showcase.hero-icons"
+      ],
+      "descriptions": [
+        {
+          "surface": "onboarding",
+          "text": "Automatiza tu negocio con IA real",
+          "ref": "src/config/services.ts#L32"
+        },
+        {
+          "surface": "onboarding",
+          "text": "NLP avanzado - GPT-4o o modelo equivalente integrado",
+          "ref": "src/data/deliverables.ts#L28"
+        },
+        {
+          "surface": "showcase",
+          "text": "OpenAI / Gemini / Claude shown as capability icons",
+          "ref": "../client-showcase-overview/src/pages/Index.tsx#L305"
+        }
+      ],
+      "classification": "[MARKETEADO]",
+      "confidence": "MEDIUM"
+    },
+    {
+      "canonicalName": "project-communication-sla",
+      "aliases": [
+        "SLA <2hs",
+        "updates 48-72hs",
+        "trazabilidad 100%"
+      ],
+      "surfaces": [
+        "onboarding.communication"
+      ],
+      "descriptions": [
+        {
+          "surface": "onboarding",
+          "text": "SLA respuesta <2hs, update 48-72hs, trazabilidad 100%",
+          "ref": "src/components/react/CommunicationBentoSection.tsx#L22"
+        }
+      ],
+      "classification": "[MARKETEADO]",
+      "confidence": "MEDIUM"
+    }
+  ],
+  "valueClaims": [
+    {
+      "text": "No son solo prototipos, son herramientas completas que podemos personalizar en 3 a 7 dias.",
+      "originSurface": "showcase.how-it-works",
+      "type": "velocidad",
+      "level": "moderado",
+      "evidenceVisible": "PARCIAL",
+      "refs": [
+        "../client-showcase-overview/src/components/HowItWorks.tsx#L35"
+      ],
+      "classification": "[MARKETEADO]",
+      "confidence": "MEDIUM"
+    },
+    {
+      "text": "El desarrollo tiene un pago unico desde $137.000 ARS ... mantenimiento mensual desde $35.000 ARS.",
+      "originSurface": "showcase.faq",
+      "type": "revenue",
+      "level": "descriptivo",
+      "evidenceVisible": "NO",
+      "refs": [
+        "../client-showcase-overview/src/components/FAQ.tsx#L11"
+      ],
+      "classification": "[MARKETEADO]",
+      "confidence": "HIGH"
+    },
+    {
+      "text": "Automatiza tu negocio con IA real. Sin hype, con resultados medibles.",
+      "originSurface": "onboarding.service.bot",
+      "type": "IA",
+      "level": "moderado",
+      "evidenceVisible": "PARCIAL",
+      "refs": [
+        "src/config/services.ts#L32"
+      ],
+      "classification": "[MARKETEADO]",
+      "confidence": "MEDIUM"
+    },
+    {
+      "text": "Respuesta en menos de 2hs",
+      "originSurface": "onboarding.cta",
+      "type": "velocidad",
+      "level": "moderado",
+      "evidenceVisible": "NO",
+      "refs": [
+        "src/components/react/CTASection.tsx#L121"
+      ],
+      "classification": "[MARKETEADO]",
+      "confidence": "MEDIUM"
+    },
+    {
+      "text": "30 dias de soporte",
+      "originSurface": "onboarding.hero-and-deliverables",
+      "type": "soporte",
+      "level": "descriptivo",
+      "evidenceVisible": "PARCIAL",
+      "refs": [
+        "src/components/react/HeroSection.tsx#L16",
+        "src/data/deliverables.ts#L17"
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    }
+  ],
+  "ctas": [
+    {
+      "text": "Ver Soluciones",
+      "intent": "info",
+      "destination": "in-page #soluciones",
+      "context": "showcase.hero",
+      "variant": "default|workana",
+      "consistencyWithOtherSurface": "LOW",
+      "refs": [
+        "../client-showcase-overview/src/pages/Index.tsx#L270"
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "MEDIUM"
+    },
+    {
+      "text": "Agendar Reunion",
+      "intent": "contacto",
+      "destination": "in-page #contacto",
+      "context": "showcase.hero.default",
+      "variant": "default",
+      "consistencyWithOtherSurface": "LOW",
+      "refs": [
+        "../client-showcase-overview/src/pages/Index.tsx#L285"
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "MEDIUM"
+    },
+    {
+      "text": "Ver Proyectos",
+      "intent": "info",
+      "destination": "in-page #all-projects",
+      "context": "showcase.hero.workana",
+      "variant": "workana",
+      "consistencyWithOtherSurface": "PARTIAL",
+      "refs": [
+        "../client-showcase-overview/src/pages/Index.tsx#L280"
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    },
+    {
+      "text": "Ver Demo",
+      "intent": "demo",
+      "destination": "template.demoUrl",
+      "context": "showcase.card+modal",
+      "variant": "all",
+      "consistencyWithOtherSurface": "PARTIAL",
+      "refs": [
+        "../client-showcase-overview/src/components/CardTemplate.tsx#L78",
+        "../client-showcase-overview/src/components/ModalTemplate.tsx#L996"
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    },
+    {
+      "text": "Consultar por WhatsApp",
+      "intent": "contacto",
+      "destination": "wa.me links (multiple numbers)",
+      "context": "showcase.footer+floating+modal",
+      "variant": "default only for some locations",
+      "consistencyWithOtherSurface": "LOW",
+      "refs": [
+        "../client-showcase-overview/src/components/FloatingCTA.tsx#L5",
+        "../client-showcase-overview/src/components/Footer.tsx#L22",
+        "../client-showcase-overview/src/components/ModalTemplate.tsx#L1016"
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    },
+    {
+      "text": "Agendar Reunion Gratuita / Agendar Llamada",
+      "intent": "contacto",
+      "destination": "calendly links (multiple values)",
+      "context": "showcase.footer+modal",
+      "variant": "default",
+      "consistencyWithOtherSurface": "LOW",
+      "refs": [
+        "../client-showcase-overview/src/components/Footer.tsx#L23",
+        "../client-showcase-overview/src/components/ModalTemplate.tsx#L1041"
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    },
+    {
+      "text": "ACEPTAR PROPUESTA",
+      "intent": "contratacion",
+      "destination": "workana CTA URL in default platform; non-link visual CTA in workana platform",
+      "context": "onboarding.hero+final-cta",
+      "variant": "platform dependent",
+      "consistencyWithOtherSurface": "PARTIAL",
+      "refs": [
+        "src/components/react/HeroSection.tsx#L23",
+        "src/components/react/HeroSection.tsx#L191",
+        "src/components/react/HeroSection.tsx#L160",
+        "src/components/react/CTASection.tsx#L25",
+        "src/components/react/CTASection.tsx#L78",
+        "src/components/react/CTASection.tsx#L48",
+        "src/config/site.ts#L9"
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    },
+    {
+      "text": "Ver portfolio ->",
+      "intent": "info",
+      "destination": "https://ad-astra.me",
+      "context": "onboarding.hero.default",
+      "variant": "hidden in workana",
+      "consistencyWithOtherSurface": "PARTIAL",
+      "refs": [
+        "src/components/react/HeroSection.tsx#L225",
+        "src/config/site.ts#L5"
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    }
+  ],
+  "integrationsMentioned": [
+    {
+      "name": "OpenAI",
+      "surfaces": [
+        "showcase.hero-icons",
+        "onboarding.bot-deliverables"
+      ],
+      "claimDepth": "mencionada",
+      "implementationEvidenceInCode": "NO",
+      "refs": [
+        "../client-showcase-overview/src/pages/Index.tsx#L325",
+        "src/data/deliverables.ts#L28"
+      ],
+      "classification": "[MARKETEADO]",
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "WhatsApp",
+      "surfaces": [
+        "showcase.floating-cta",
+        "showcase.footer",
+        "showcase.modal",
+        "onboarding.bot-deliverables"
+      ],
+      "claimDepth": "descrita",
+      "implementationEvidenceInCode": "PARCIAL",
+      "refs": [
+        "../client-showcase-overview/src/components/FloatingCTA.tsx#L5",
+        "../client-showcase-overview/src/components/Footer.tsx#L22",
+        "../client-showcase-overview/src/components/ModalTemplate.tsx#L1016",
+        "src/data/deliverables.ts#L32"
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "CRM",
+      "surfaces": [
+        "onboarding.bot-deliverables"
+      ],
+      "claimDepth": "descrita",
+      "implementationEvidenceInCode": "NO",
+      "refs": [
+        "src/data/deliverables.ts#L32"
+      ],
+      "classification": "[MARKETEADO]",
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "Vercel",
+      "surfaces": [
+        "showcase.faq"
+      ],
+      "claimDepth": "mencionada",
+      "implementationEvidenceInCode": "PARCIAL",
+      "refs": [
+        "../client-showcase-overview/src/components/FAQ.tsx#L18"
+      ],
+      "classification": "[MARKETEADO]",
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "Hostinger",
+      "surfaces": [
+        "showcase.faq"
+      ],
+      "claimDepth": "mencionada",
+      "implementationEvidenceInCode": "NO",
+      "refs": [
+        "../client-showcase-overview/src/components/FAQ.tsx#L18"
+      ],
+      "classification": "[MARKETEADO]",
+      "confidence": "MEDIUM"
+    },
+    {
+      "name": "AWS/Azure/GoogleCloud/Cloudflare/Firebase/Supabase/WordPress/Gemini/Claude/Docker",
+      "surfaces": [
+        "showcase.hero-icons"
+      ],
+      "claimDepth": "mencionada",
+      "implementationEvidenceInCode": "NO",
+      "refs": [
+        "../client-showcase-overview/src/pages/Index.tsx#L293"
+      ],
+      "classification": "[MARKETEADO]",
+      "confidence": "LOW"
+    }
+  ],
+  "industryTaxonomy": {
+    "showcase": {
+      "canonicalSet": [
+        "salud-bienestar",
+        "restaurantes-gastronomia",
+        "gimnasios-fitness",
+        "servicios-profesionales",
+        "inmobiliarias",
+        "servicios-hogar",
+        "automotriz",
+        "entretenimiento",
+        "educacion"
+      ],
+      "displayNames": [
+        "Salud & Bienestar",
+        "Restaurantes & Gastronomia",
+        "Gimnasios & Fitness",
+        "Servicios Profesionales",
+        "Inmobiliarias",
+        "Servicios para el Hogar",
+        "Automotriz",
+        "Entretenimiento & Eventos",
+        "Educacion"
+      ],
+      "refs": [
+        "../client-showcase-overview/src/data/industry-config.ts#L6",
+        "../client-showcase-overview/src/data/industry-config.ts#L20"
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    },
+    "onboarding": {
+      "canonicalSet": [
+        "retail",
+        "startup",
+        "local",
+        "saas",
+        "default"
+      ],
+      "refs": [
+        "src/lib/params.ts#L4"
+      ],
+      "classification": "[IMPLEMENTADO]",
+      "confidence": "HIGH"
+    },
+    "mismatch": {
+      "status": "YES",
+      "type": "Industry taxonomy mismatch",
+      "details": [
+        "Showcase taxonomy is vertical/domain-specific with 9 concrete industries.",
+        "Onboarding taxonomy is buyer/profile-style with 5 generic values and no direct mapping table.",
+        "Onboarding industry param is parsed but has no audited copy/render effect."
+      ],
+      "refs": [
+        "../client-showcase-overview/src/data/industry-config.ts#L6",
+        "src/lib/params.ts#L4",
+        "src/components/react/HeroSection.tsx#L129"
+      ],
+      "classification": "[IMPLEMENTADO] + [INFERIDO]",
+      "confidence": "HIGH"
+    }
+  }
+}

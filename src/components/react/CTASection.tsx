@@ -4,7 +4,7 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { SITE } from '@config/site';
 import type { HubParams } from '@lib/params';
-import type { ServiceConfig } from '@config/services';
+import copy, { type ServiceConfig } from '@/data/copy';
 
 interface Props {
   params: HubParams;
@@ -22,7 +22,8 @@ export default function CTASection({ params, service }: Props) {
   });
 
   const bgScale = useTransform(scrollYProgress, [0, 0.5], [0.85, 1.2]);
-  const primaryCtaLabel = isWorkana ? 'ACEPTAR PROPUESTA' : service.ctaLabel;
+  const ctaContent = isWorkana ? copy.cta.workana : copy.cta.default;
+  const primaryCtaLabel = isWorkana ? ctaContent.label : copy.hero[service.id].es.default.ctaLabel;
 
   return (
     <section id="cta" ref={sectionRef} style={{ position: 'relative', overflow: 'hidden', background: 'var(--bg-primary)', padding: '6rem 0' }}>
@@ -38,11 +39,11 @@ export default function CTASection({ params, service }: Props) {
 
       <div style={{ maxWidth: '48rem', margin: '0 auto', padding: '0 1.5rem', textAlign: 'center', position: 'relative' }}>
         <span className="mono" style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.75rem' }}>
-          Todo claro?
+          {ctaContent.kicker}
         </span>
-        <h2 style={{ margin: '1rem 0 0.8rem', fontSize: 'clamp(2.5rem,5vw,4rem)', lineHeight: 1.05 }}>Listo para arrancar.</h2>
+        <h2 style={{ margin: '1rem 0 0.8rem', fontSize: 'clamp(2.5rem,5vw,4rem)', lineHeight: 1.05 }}>{ctaContent.title}</h2>
         <p style={{ margin: '0 auto', maxWidth: '40rem', color: 'var(--text-secondary)', fontSize: '1.2rem', lineHeight: 1.7 }}>
-          La propuesta esta esperando tu respuesta en Workana. Responde y empezamos en 24hs.
+          {ctaContent.body}
         </p>
 
         {isWorkana ? (
@@ -104,21 +105,21 @@ export default function CTASection({ params, service }: Props) {
               fontSize: '1.05rem',
             }}
           >
-            {primaryCtaLabel} -&gt;
+            {primaryCtaLabel}{copy.cta.default.labelSuffix}
           </motion.a>
         )}
 
         {!isWorkana && (
           <p style={{ marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-            Tenes alguna pregunta antes?{' '}
+            {copy.cta.default.emailPrompt}{' '}
             <a href={`mailto:${SITE.contactEmail}`} style={{ color: 'var(--accent)' }}>
-              Escribinos aca.
+              {copy.cta.default.emailLabel}
             </a>
           </p>
         )}
 
         <p className="mono" style={{ marginTop: '1.2rem', color: 'var(--text-muted)', fontSize: '0.72rem' }}>
-          {isWorkana ? 'Acepta la propuesta desde Workana para avanzar' : 'Respuesta en menos de 2hs - Sin compromiso'}
+          {ctaContent.helper}
         </p>
       </div>
     </section>

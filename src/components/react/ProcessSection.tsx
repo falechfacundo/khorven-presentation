@@ -5,6 +5,7 @@ import { useMotionValueEvent } from 'framer-motion';
 import { useReducedMotion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { PROCESS_STEPS } from '@data/process';
+import copy from '@/data/copy';
 
 export default function ProcessSection() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -84,10 +85,10 @@ export default function ProcessSection() {
           <div style={{ maxWidth: '72rem', margin: '0 auto', width: '100%', padding: '0 1.5rem' }}>
             <div style={{ marginBottom: '3rem' }}>
               <span className="mono" style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.75rem' }}>
-                Proceso
+                {copy.process.section.kicker}
               </span>
-              <h2 style={{ marginTop: '0.65rem', marginBottom: '0.75rem', fontSize: '2.2rem' }}>Como trabajamos</h2>
-              <p style={{ margin: 0, color: 'var(--text-secondary)' }}>Estructura clara de inicio a fin. Sin sorpresas.</p>
+              <h2 style={{ marginTop: '0.65rem', marginBottom: '0.75rem', fontSize: '2.2rem' }}>{copy.process.section.title}</h2>
+              <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{copy.process.section.subtitle}</p>
             </div>
 
             <div style={{ position: 'relative' }}>

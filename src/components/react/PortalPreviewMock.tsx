@@ -12,6 +12,7 @@ import {
   Circle,
   ChevronRight,
 } from 'lucide-react';
+import copy from '@/data/copy';
 
 type TabId = 'roadmap' | 'archivos' | 'pagos' | 'mensajes';
 
@@ -34,52 +35,17 @@ interface Message {
   isUs: boolean;
 }
 
-const MILESTONES: Milestone[] = [
-  { label: 'Brief y scope aprobado', status: 'done', date: 'Dia 1' },
-  { label: 'Diseno aprobado', status: 'done', date: 'Dia 4' },
-  { label: 'Desarrollo completado', status: 'active', date: 'Dia 9' },
-  { label: 'Revision y ajustes', status: 'pending', date: 'Dia 12' },
-  { label: 'Entrega final + deploy', status: 'pending', date: 'Dia 14' },
-];
-
-const PAYMENTS: Payment[] = [
-  { label: 'Adelanto 50% - Inicio', amount: '$250', status: 'paid' },
-  { label: 'Saldo 50% - Entrega', amount: '$250', status: 'pending' },
-];
-
-const MESSAGES: Message[] = [
-  {
-    from: 'Ad Astra',
-    text: 'El diseno esta listo para revision. Podes verlo en el link compartido.',
-    time: 'Hace 2hs',
-    isUs: true,
-  },
-  {
-    from: 'Vos',
-    text: 'Perfecto, lo reviso hoy. Se puede cambiar el color del header?',
-    time: 'Hace 1hs',
-    isUs: false,
-  },
-  {
-    from: 'Ad Astra',
-    text: 'Si, sin problema. Hacemos el ajuste y subimos una nueva version.',
-    time: 'Hace 45m',
-    isUs: true,
-  },
-];
-
-const FILES = [
-  { name: 'Brief_Proyecto.pdf', size: '84 KB', type: 'pdf' },
-  { name: 'Diseno_v2_aprobado.fig', size: '2.1 MB', type: 'fig' },
-  { name: 'Contrato_firmado.pdf', size: '120 KB', type: 'pdf' },
-  { name: 'Assets_logos.zip', size: '4.3 MB', type: 'zip' },
-];
+const MILESTONES: Milestone[] = copy.portal.milestones;
+const PAYMENTS: Payment[] = copy.portal.payments;
+const MESSAGES: Message[] = copy.portal.messages;
+const FILES = copy.portal.files;
+const TAB_LABELS = Object.fromEntries(copy.portal.tabs.map((tab) => [tab.id, tab.label])) as Record<TabId, string>;
 
 const TABS: { id: TabId; label: string; icon: ElementType }[] = [
-  { id: 'roadmap', label: 'Roadmap', icon: LayoutDashboard },
-  { id: 'archivos', label: 'Archivos', icon: FileText },
-  { id: 'pagos', label: 'Pagos', icon: CreditCard },
-  { id: 'mensajes', label: 'Mensajes', icon: MessageSquare },
+  { id: 'roadmap', label: TAB_LABELS.roadmap, icon: LayoutDashboard },
+  { id: 'archivos', label: TAB_LABELS.archivos, icon: FileText },
+  { id: 'pagos', label: TAB_LABELS.pagos, icon: CreditCard },
+  { id: 'mensajes', label: TAB_LABELS.mensajes, icon: MessageSquare },
 ];
 
 export default function PortalPreviewMock() {
@@ -148,7 +114,7 @@ export default function PortalPreviewMock() {
             marginLeft: '8px',
           }}
         >
-          portal.ad-astra.me / proyectos / landing-ecommer...
+          {copy.portal.section.browserPath}
         </div>
       </div>
 
@@ -173,7 +139,7 @@ export default function PortalPreviewMock() {
               paddingLeft: '8px',
             }}
           >
-            Mi proyecto
+            {copy.portal.section.projectLabel}
           </p>
 
           {TABS.map((tab) => {
@@ -216,7 +182,7 @@ export default function PortalPreviewMock() {
           {activeTab === 'roadmap' && (
             <motion.div key="roadmap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', marginBottom: '20px', color: 'var(--text-primary)' }}>
-                Progreso del proyecto
+                {copy.portal.roadmapTitle}
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {MILESTONES.map((m, i) => (
@@ -257,7 +223,7 @@ export default function PortalPreviewMock() {
           {activeTab === 'archivos' && (
             <motion.div key="archivos" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', marginBottom: '20px', color: 'var(--text-primary)' }}>
-                Archivos del proyecto
+                {copy.portal.filesTitle}
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {FILES.map((f, i) => (
@@ -288,7 +254,7 @@ export default function PortalPreviewMock() {
           {activeTab === 'pagos' && (
             <motion.div key="pagos" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', marginBottom: '20px', color: 'var(--text-primary)' }}>
-                Estado de pagos
+                {copy.portal.paymentsTitle}
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {PAYMENTS.map((p, i) => (
@@ -327,7 +293,7 @@ export default function PortalPreviewMock() {
                               : '1px solid var(--bg-border)',
                         }}
                       >
-                        {p.status === 'paid' ? 'Pagado' : 'Pendiente'}
+                        {p.status === 'paid' ? copy.portal.statuses.paid : copy.portal.statuses.pending}
                       </span>
                     </div>
                   </div>
@@ -339,7 +305,7 @@ export default function PortalPreviewMock() {
           {activeTab === 'mensajes' && (
             <motion.div key="mensajes" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
               <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', marginBottom: '20px', color: 'var(--text-primary)' }}>
-                Conversacion del proyecto
+                {copy.portal.messagesTitle}
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {MESSAGES.map((m, i) => (

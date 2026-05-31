@@ -1,8 +1,8 @@
 ---
 import '../styles/global.css';
 import type { HubParams } from '@lib/params';
-import type { ServiceConfig } from '@config/services';
 import { SITE } from '@config/site';
+import copy, { type ServiceConfig } from '@/data/copy';
 
 interface Props {
   params: HubParams;
@@ -11,9 +11,9 @@ interface Props {
 
 const { params, service } = Astro.props;
 
-const title = `Ad Astra - ${service.label}`;
+const title = `${copy.meta.titlePrefix} ${service.label}`;
 const description = service.subheadline;
-const ogImage = `${SITE.url}/og-image.png`;
+const ogImage = `${SITE.url}${copy.meta.ogImagePath}`;
 ---
 
 <!doctype html>

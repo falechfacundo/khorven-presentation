@@ -11,7 +11,7 @@ import FAQ from '@blocks/FAQ.astro';
 import CTAFinal from '@blocks/CTAFinal.astro';
 
 import { parseParams } from '@lib/params';
-import { SERVICES } from '@config/services';
+import { SERVICES } from '@/data/copy';
 
 const params = parseParams(Astro.url);
 const service = SERVICES[params.service];
