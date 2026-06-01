@@ -47,34 +47,9 @@ export default function CTASection({ params, service }: Props) {
         </p>
 
         {isWorkana ? (
-          <motion.span
-            animate={
-              isInView
-                ? {
-                    boxShadow: [
-                      '0 0 0 rgba(174,53,255,0.0)',
-                      '0 0 26px rgba(174,53,255,0.35)',
-                      '0 0 0 rgba(174,53,255,0.0)',
-                    ],
-                  }
-                : { boxShadow: '0 0 0 rgba(174,53,255,0.0)' }
-            }
-            transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              marginTop: '2rem',
-              padding: '1rem 2.2rem',
-              borderRadius: '10px',
-              textDecoration: 'none',
-              background: 'var(--accent)',
-              color: '#080808',
-              fontWeight: 700,
-              fontSize: '1.05rem',
-            }}
-          >
+          <p style={{ marginTop: '2rem', color: 'var(--text-secondary)', fontSize: '1.05rem', fontWeight: 600 }}>
             {primaryCtaLabel}
-          </motion.span>
+          </p>
         ) : (
           <motion.a
             href={SITE.workanaCta}
