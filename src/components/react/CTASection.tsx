@@ -46,11 +46,7 @@ export default function CTASection({ params, service }: Props) {
           {ctaContent.body}
         </p>
 
-        {isWorkana ? (
-          <p style={{ marginTop: '2rem', color: 'var(--text-secondary)', fontSize: '1.05rem', fontWeight: 600 }}>
-            {primaryCtaLabel}
-          </p>
-        ) : (
+        {!isWorkana && (
           <motion.a
             href={SITE.workanaCta}
             target="_blank"

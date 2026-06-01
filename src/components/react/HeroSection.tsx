@@ -154,37 +154,7 @@ export default function HeroSection({ params, service }: Props) {
             transition={{ duration: 0.45, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
             style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '0.5rem' }}
           >
-            {isWorkana ? (
-              <motion.span
-                animate={
-                  isInView
-                    ? {
-                        boxShadow: [
-                          '0 0 0 rgba(174,53,255,0.0)',
-                          '0 0 26px rgba(174,53,255,0.35)',
-                          '0 0 0 rgba(174,53,255,0.0)',
-                        ],
-                      }
-                    : { boxShadow: '0 0 0 rgba(174,53,255,0.0)' }
-                }
-                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  padding: '14px 28px',
-                  background: 'var(--accent)',
-                  color: '#080808',
-                  fontFamily: 'var(--font-body)',
-                  fontWeight: 600,
-                  fontSize: '0.95rem',
-                  borderRadius: '10px',
-                  textDecoration: 'none',
-                  opacity: 0.92,
-                }}
-              >
-                {primaryCtaLabel}
-              </motion.span>
-            ) : (
+            {!isWorkana && (
               <motion.a
                 href={SITE.workanaCta}
                 target="_blank"
