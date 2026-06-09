@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, usePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { X, Check, Film } from 'lucide-react';
 
 const antesItems = [
@@ -52,21 +51,7 @@ function PanelItem({
   );
 }
 
-export default function Slide3() {
-  const [isPresent, safeToRemove] = usePresence();
-  const [exiting, setExiting] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
-
-  useEffect(() => {
-    if (!isPresent) {
-      setExiting(true);
-      timerRef.current = setTimeout(() => safeToRemove(), 800);
-      return () => {
-        if (timerRef.current) clearTimeout(timerRef.current);
-      };
-    }
-  }, [isPresent, safeToRemove]);
-
+export default function Slide4() { // Renamed from Slide3 to Slide4
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center bg-navy px-[60px] py-8 overflow-hidden">
       <motion.h2
@@ -94,26 +79,17 @@ export default function Slide3() {
           className="rounded-2xl border border-white/10 p-10 flex flex-col relative overflow-hidden"
           style={{
             height: '500px',
-            filter: exiting ? 'none' : 'grayscale(80%) brightness(0.85)',
+            filter: 'grayscale(80%) brightness(0.85)', // Static filter for 'before' state
             transition: 'filter 0.5s ease',
             transformStyle: 'preserve-3d',
           }}
           initial={{ rotateY: -45, opacity: 0, x: -50 }}
-          animate={
-            exiting
-              ? {
-                  rotateY: 45,
-                  opacity: 0,
-                  x: -30,
-                  transition: { duration: 0.4, ease: 'easeIn' },
-                }
-              : {
-                  rotateY: 0,
-                  opacity: 1,
-                  x: 0,
-                  transition: { duration: 0.7, ease: 'easeOut' },
-                }
-          }
+          animate={{
+            rotateY: 0,
+            opacity: 1,
+            x: 0,
+            transition: { duration: 0.7, ease: 'easeOut' },
+          }}
         >
           <motion.p
             className="text-[32px] font-bold text-white/40 mb-3"
@@ -165,21 +141,12 @@ export default function Slide3() {
             transformStyle: 'preserve-3d',
           }}
           initial={{ rotateY: 45, opacity: 0, x: 50 }}
-          animate={
-            exiting
-              ? {
-                  rotateY: -45,
-                  opacity: 0,
-                  x: 30,
-                  transition: { duration: 0.4, ease: 'easeIn' },
-                }
-              : {
-                  rotateY: 0,
-                  opacity: 1,
-                  x: 0,
-                  transition: { duration: 0.7, ease: 'easeOut', delay: 0.3 },
-                }
-          }
+          animate={{
+            rotateY: 0,
+            opacity: 1,
+            x: 0,
+            transition: { duration: 0.7, ease: 'easeOut', delay: 0.3 },
+          }}
         >
           <motion.p
             className="text-[32px] font-bold text-verde mb-3"
@@ -219,18 +186,6 @@ export default function Slide3() {
           >
             "Tu contenido + sistema =<br />3x más alcance en 30 días"
           </motion.p>
-
-          {/* <motion.button
-            className="mt-5 px-8 py-3 rounded-full bg-verde text-navy font-bold text-sm self-start"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5, duration: 0.4, ease: 'easeOut' }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Ver ejemplos de clientes{' '}
-            <Film size={16} className="inline ml-1" />
-          </motion.button> */}
         </motion.div>
       </div>
 

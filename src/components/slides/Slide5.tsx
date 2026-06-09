@@ -1,10 +1,60 @@
 import { motion } from 'framer-motion';
+import { Fragment } from 'react';
+
+// Component for animated grid lines
+const AnimatedGrid = () => {
+  const lineCount = 10;
+  const variants = {
+    hidden: { opacity: 0, x: -10, y: -10 },
+    visible: (i: number) => ({
+      opacity: [0, 0.4, 0.6, 0.4, 0],
+      x: 0,
+      y: 0,
+      transition: {
+        duration: 4,
+        ease: 'easeOut',
+        delay: i * 0.1,
+      },
+    }),
+  };
+
+  return (
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="relative w-full h-full">
+        {Array.from({ length: lineCount }).map((_, i) => (
+          <Fragment key={i}>
+            {/* Horizontal lines */}
+            <motion.div
+              variants={variants}
+              custom={i}
+              initial="hidden"
+              animate="visible"
+              className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-white/10 to-white/30"
+              style={{ top: `${(i * 100) / lineCount}%` }}
+            />
+            {/* Vertical lines */}
+            <motion.div
+              variants={variants}
+              custom={lineCount + i} // Offset custom prop for vertical lines
+              initial="hidden"
+              animate="visible"
+              className="absolute top-0 bottom-0 w-0.5 bg-gradient-to-b from-white/10 to-white/30"
+              style={{ left: `${(i * 100) / lineCount}%` }}
+            />
+          </Fragment>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default function Slide5() {
   const headline = '¿Empezamos mañana?';
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center bg-navy overflow-hidden">
+      <AnimatedGrid/>
+      
       <motion.div
         className="absolute inset-0 flex items-center justify-center gap-12"
         initial={{ opacity: 0 }}
