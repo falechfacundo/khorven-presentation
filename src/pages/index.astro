@@ -1,30 +1,33 @@
 ---
-export const prerender = false;
-
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import Hero from '@blocks/Hero.astro';
-import Process from '@blocks/Process.astro';
-import Deliverables from '@blocks/Deliverables.astro';
-// import PortalPreview from '@blocks/PortalPreview.astro';
-import Communication from '@blocks/Communication.astro';
-import FAQ from '@blocks/FAQ.astro';
-import CTAFinal from '@blocks/CTAFinal.astro';
-
-import { parseParams } from '@lib/params';
-import { SERVICES } from '@/data/copy';
-
-const params = parseParams(Astro.url);
-const service = SERVICES[params.service];
+import '../styles/global.css';
+import SlidePresentation from '@/components/react/SlidePresentation';
 ---
 
-<BaseLayout params={params} service={service}>
-	<Hero params={params} service={service} />
-	<Process />
-	<Deliverables service={service} />
-	{/* PortalPreview commented out until the portal is operational. */}
-	{/* <PortalPreview /> */}
-	<Communication />
-	<FAQ service={service} />
-	<CTAFinal params={params} service={service} />
-</BaseLayout>
-
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="Khorven - Presentación" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Khorven — Presentación</title>
+    <style>
+      html, body, #root {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #0a0e27;
+      }
+    </style>
+  </head>
+  <body>
+    <SlidePresentation client:load />
+  </body>
+</html>

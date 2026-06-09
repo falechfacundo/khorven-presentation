@@ -1,6 +1,40 @@
-@import url("https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
 
 @import "tailwindcss";
+
+@theme {
+	--color-rosa: hsl(346, 99%, 62%);
+	--color-rosa-hover: hsl(346, 99%, 55%);
+	--color-rosa-glow: hsla(346, 99%, 62%, 0.3);
+	--color-verde: hsl(81, 85%, 56%);
+	--color-verde-hover: hsl(81, 85%, 48%);
+	--color-verde-glow: hsla(81, 85%, 56%, 0.3);
+  --color-navy: #0a0e27;
+
+  --color-verde-50:  #e7f5e6;
+  --color-verde-100: #cdeace;
+  --color-verde-200: #a3d8a5;
+  --color-verde-300: #79c37c;
+  --color-verde-400: #4fad55;
+  --color-verde-500: #22963b;
+  --color-verde-600: #187a2e;
+  --color-verde-700: #0e5f22;
+  --color-verde-800: #054315;
+  --color-verde-900: #002809;
+
+  --color-rosa-50:  #fde7ea;
+  --color-rosa-100: #f9c6cd;
+  --color-rosa-200: #f5a5b0;
+  --color-rosa-300: #f18493;
+  --color-rosa-400: #ec6377;
+  --color-rosa-500: #f2465f;
+  --color-rosa-600: #d43b55;
+  --color-rosa-700: #b2304b;
+  --color-rosa-800: #8e263f;
+  --color-rosa-900: #6a1c33;
+
+	--color-navy-light: #12163a;
+}
 
 @layer base {
 	:root {
@@ -15,50 +49,8 @@
 		--text-secondary: #888888;
 		--text-muted:     #444444;
 
-		/* -- Brand: Violeta Ad Astra -- */
-		--violet-50:  #FAF3FF;
-		--violet-100: #F4E3FF;
-		--violet-200: #EACDFF;
-		--violet-300: #DAA5FF;
-		--violet-400: #C46CFF;
-		--violet-500: #AE35FF;
-		--violet-600: #9B0FFF;
-		--violet-700: #8F00FF;
-		--violet-800: #7306C3;
-		--violet-900: #5F079C;
-		--violet-950: #400076;
 
-		/* -- Brand: Turquesa Ad Astra -- */
-		--turquesa-50:  #EEFFFB;
-		--turquesa-100: #C5FFF7;
-		--turquesa-200: #8BFFF0;
-		--turquesa-300: #47FFE7;
-		--turquesa-400: #14EDD8;
-		--turquesa-500: #00D1BF;
-		--turquesa-600: #00A89D;
-		--turquesa-700: #00857F;
-		--turquesa-800: #056A66;
-		--turquesa-900: #0A5754;
-		--turquesa-950: #003535;
-
-		/* -- Semantic tokens -- */
-		--accent:         var(--violet-500);
-		--accent-hover:   var(--violet-600);
-		--accent-muted:   rgba(174, 53, 255, 0.08);
-		--accent-2:       var(--turquesa-500);
-		--accent-2-muted: rgba(0, 209, 191, 0.08);
-
-		--success: var(--turquesa-400);
-		--border:  1px solid var(--bg-border);
-
-		/* -- Gradients -- */
-		--gradient-brand: linear-gradient(135deg, var(--violet-500) 0%, var(--turquesa-500) 100%);
-		--gradient-hero:  linear-gradient(135deg, #080808 0%, #111111 50%, rgba(174,53,255,0.06) 100%);
-		--gradient-card:  linear-gradient(180deg, #1a1a1a 0%, #111111 100%);
-
-		/* -- Glows -- */
-		--glow-violet:   0 0 40px rgba(174, 53, 255, 0.25);
-		--glow-turquesa: 0 0 40px rgba(0, 209, 191, 0.25);
+  --navy:  #0a0e27;
 
 		/* -- Typography scale -- */
 		--font-display: 'Syne', sans-serif;

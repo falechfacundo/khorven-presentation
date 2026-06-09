@@ -1,0 +1,133 @@
+import { useState, useEffect, useCallback } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import Slide1 from '@/components/slides/Slide1';
+import Slide2 from '@/components/slides/Slide2';
+import Slide3 from '@/components/slides/Slide3';
+import Slide4 from '@/components/slides/Slide4';
+import Slide5 from '@/components/slides/Slide5'; // Import Slide5
+
+const TOTAL_SLIDES = 5; // Update TOTAL_SLIDES to 5
+
+const slideVariants = {
+  enter: (dir: number) => ({
+    y: dir >= 0 ? '100%' : '-100%',
+    opacity: 0,
+  }),
+  center: {
+    y: 0,
+    opacity: 1,
+  },
+  exit: (dir: number) => ({
+    y: dir >= 0 ? '-100%' : '100%',
+    opacity: 0,
+  }),
+};
+
+export default function SlidePresentation() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [direction, setDirection] = useState(1);
+
+  const goNext = useCallback(() => {
+    if (currentSlide < TOTAL_SLIDES - 1) {
+      setDirection(1);
+      setCurrentSlide((prev) => prev + 1);
+    }
+  }, [currentSlide]);
+
+  const goPrev = useCallback(() => {
+    if (currentSlide > 0) {
+      setDirection(-1);
+      setCurrentSlide((prev) => prev - 1);
+    }
+  }, [currentSlide]);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goNext();
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goPrev();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [goNext, goPrev]);
+
+  const renderSlide = () => {
+    switch (currentSlide) {
+      case 0:
+        return <Slide1 />;
+      case 1:
+        return <Slide2 />;
+      case 2:
+        return <Slide3 />;
+      case 3:
+        return <Slide4 />;
+      case 4:
+        return <Slide5 />; // Add case for Slide5
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div
+      className="relative w-full h-dvh overflow-hidden bg-navy"
+      style={{ perspective: '1200px' }}
+    >
+      <AnimatePresence custom={direction}>
+        <motion.div
+          key={currentSlide}
+          custom={direction}
+          variants={slideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{
+            type: 'tween',
+            duration: 0.6,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="absolute inset-0"
+        >
+          {renderSlide()}
+        </motion.div>
+      </AnimatePresence>
+
+      <nav className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-6 z-50">
+        <button
+          onClick={goPrev}
+          disabled={currentSlide === 0}
+          className="text-white/60 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-200 text-xl font-bold px-3 py-1"
+          aria-label="Anterior"
+        >
+          ← Prev
+        </button>
+
+        <div className="flex items-center gap-3">
+          {Array.from({ length: TOTAL_SLIDES }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setDirection(i > currentSlide ? 1 : -1);
+                setCurrentSlide(i);
+              }}
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                i === currentSlide
+                  ? 'bg-rosa scale-125'
+                  : 'bg-white/30 hover:bg-white/50'
+              }`}
+              aria-label={`Ir a slide ${i + 1}`}
+            />
+          ))}
+        </div>
+
+        <button
+          onClick={goNext}
+          disabled={currentSlide === TOTAL_SLIDES - 1}
+          className="text-white/60 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-200 text-xl font-bold px-3 py-1"
+          aria-label="Siguiente"
+        >
+          Next →
+        </button>
+      </nav>
+    </div>
+  );
+}
