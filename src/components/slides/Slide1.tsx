@@ -20,7 +20,7 @@ export default function Slide1() {
       <div className="relative z-10 flex flex-col items-center">
         <motion.svg
           viewBox="0 0 375 345"
-          className="w-48 h-44 md:w-56 md:h-52"
+          className="max-sm:w-36 max-sm:h-32 w-48 h-44 md:w-56 md:h-52"
         >
           <defs>
             <linearGradient id="logoFill" x1="0" y1="0" x2="1" y2="1">
@@ -53,7 +53,7 @@ export default function Slide1() {
         </motion.svg>
 
         <motion.p
-          className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[0.25em] mt-4 text-white"
+          className="max-sm:text-3xl text-4xl md:text-5xl lg:text-6xl font-bold tracking-[0.25em] mt-4 text-white"
           style={{ fontFamily: 'var(--font-display)' }}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -64,7 +64,7 @@ export default function Slide1() {
       </div>
 
       <motion.h1
-        className="relative z-10 text-2xl md:text-3xl lg:text-4xl font-bold text-center max-w-3xl px-6 mt-8 md:mt-10 leading-tight"
+        className="relative z-10 max-sm:text-xl text-2xl md:text-3xl lg:text-4xl font-bold text-center max-sm:max-w-full max-w-3xl max-sm:px-4 px-6 max-sm:mt-6 mt-8 md:mt-10 leading-tight"
         style={{ fontFamily: 'var(--font-display)' }}
       >
         {words.map((word, i) => (

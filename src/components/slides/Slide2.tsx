@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, usePresence } from 'framer-motion';
+import { motion, AnimatePresence, usePresence } from 'framer-motion';
 import { Film } from 'lucide-react';
 
 const weeks = [
@@ -238,7 +238,10 @@ function GrowthChart({ delay }: { delay: number }) {
 export default function Slide2() {
   const [isPresent, safeToRemove] = usePresence();
   const [exiting, setExiting] = useState(false);
+  const [activeWeek, setActiveWeek] = useState(0);
+  const [swipeDir, setSwipeDir] = useState(1);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const touchStart = useRef<{ x: number } | null>(null);
 
   useEffect(() => {
     if (!isPresent) {
@@ -253,9 +256,9 @@ export default function Slide2() {
   const cardsExitDelay = 0.35;
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center bg-navy px-10 py-8 overflow-hidden">
+    <div className="relative w-full h-full flex flex-col items-center justify-center bg-navy max-sm:px-4 max-sm:py-8 px-10 py-8 overflow-hidden">
       <motion.h2
-        className="text-[56px] font-bold text-white leading-none mb-2"
+        className="max-sm:text-[28px] text-[56px] font-bold text-white leading-none max-sm:mb-2 mb-2"
         style={{ fontFamily: 'var(--font-display)' }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -265,7 +268,7 @@ export default function Slide2() {
       </motion.h2>
 
       <motion.p
-        className="text-[20px] text-white/50 mb-8"
+        className="max-sm:text-sm text-[20px] text-white/50 max-sm:mb-4 mb-8"
         style={{ fontFamily: 'var(--font-body)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -274,7 +277,7 @@ export default function Slide2() {
         En 30 días ves resultados reales
       </motion.p>
 
-      <div className="grid grid-cols-3 gap-6 w-full max-w-[1200px]">
+      <div className="max-sm:hidden grid grid-cols-3 gap-6 w-full max-w-[1200px]">
         {weeks.map((week, i) => {
           const cardDelay = i * 0.15;
           const isRosa = i % 2 === 0;
@@ -333,7 +336,7 @@ export default function Slide2() {
                   {week.subtitle}
                 </motion.p>
 
-                <div className="flex flex-col gap-1 mb-2">
+              <div className="flex flex-col gap-2 mb-2">
                   <motion.span
                     className="text-[11px] text-white/40 font-medium uppercase tracking-wider"
                     initial={{ opacity: 0 }}
@@ -409,14 +412,110 @@ export default function Slide2() {
         })}
       </div>
 
+      <div className="sm:hidden flex flex-col w-full max-w-[400px]">
+        <div
+          className="relative w-full"
+          onTouchStart={(e) => {
+            touchStart.current = { x: e.touches[0].clientX };
+          }}
+          onTouchEnd={(e) => {
+            if (!touchStart.current) return;
+            const dx = e.changedTouches[0].clientX - touchStart.current.x;
+            touchStart.current = null;
+            if (Math.abs(dx) > 40) {
+              e.stopPropagation();
+              if (dx < 0 && activeWeek < 2) {
+                setSwipeDir(1);
+                setActiveWeek((prev) => prev + 1);
+              } else if (dx > 0 && activeWeek > 0) {
+                setSwipeDir(-1);
+                setActiveWeek((prev) => prev - 1);
+              }
+            }
+          }}
+        >
+          <AnimatePresence mode="wait" custom={swipeDir}>
+            <motion.div
+              key={activeWeek}
+              custom={swipeDir}
+              variants={{
+                enter: (dir: number) => ({ x: dir * 80, opacity: 0 }),
+                center: { x: 0, opacity: 1 },
+                exit: (dir: number) => ({ x: dir * -80, opacity: 0 }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ type: 'tween', duration: 0.25, ease: 'easeOut' }}
+              className={`flex flex-col w-full rounded-2xl border-2 ${weeks[activeWeek].borderColor} bg-navy p-6`}
+            >
+              <span className="text-[10px] font-bold text-white/50 tracking-wider mb-1">
+                {weeks[activeWeek].label}
+              </span>
+              <p className={`text-xs font-bold ${weeks[activeWeek].badgeColor} mb-2`}>
+                {weeks[activeWeek].subtitle}
+              </p>
+
+              <div className="flex flex-col gap-1 mb-2">
+                <span className="text-[10px] text-white/40 font-medium uppercase tracking-wider">
+                  Qué hacemos
+                </span>
+                {weeks[activeWeek].hacemos.map((item, j) => (
+                  <div key={j} className="flex items-start gap-1.5 text-[11px] text-white/70">
+                    <span className="text-white/30 mt-0.5 shrink-0">•</span>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              {weeks[activeWeek].visual === 'videos' && <VideoFrames delay={0} />}
+              {weeks[activeWeek].visual === 'calendar' && <CalendarGrid delay={0} />}
+              {weeks[activeWeek].visual === 'chart' && <GrowthChart delay={0} />}
+
+              <div className="my-2.5 h-px bg-white/10" />
+
+              <div className="flex flex-col gap-2">
+                <span className="text-[10px] font-bold text-verde uppercase tracking-wider">
+                  Qué ves tú
+                </span>
+                {weeks[activeWeek].ves.map((item, j) => (
+                  <div key={j} className="flex items-start gap-1.5 text-[11px] text-white/80">
+                    <span className="text-verde mt-0.5 shrink-0">✓</span>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <div className="flex justify-center items-center gap-2 py-2">
+          {weeks.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setSwipeDir(i > activeWeek ? 1 : -1);
+                setActiveWeek(i);
+              }}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                i === activeWeek
+                  ? 'bg-rosa scale-125'
+                  : 'bg-white/30'
+              }`}
+              aria-label={`Semana ${i + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+
       <motion.div
-        className="mt-6 text-center max-w-[800px]"
+        className="max-sm:mt-3 mt-6 text-center max-sm:max-w-full max-w-[800px]"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.6, duration: 0.5 }}
       >
         <p
-          className="text-sm md:text-base text-white/40 leading-relaxed"
+          className="max-sm:text-[11px] text-sm md:text-base text-white/40 leading-relaxed"
           style={{ fontFamily: 'var(--font-body)' }}
         >
           Sabemos si esto funciona para tu negocio.

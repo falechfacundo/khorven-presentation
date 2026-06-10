@@ -34,7 +34,7 @@ const Sparkles = () => (
 
 export default function Slide3() {
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden px-8 py-4">
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden max-sm:px-3 max-sm:py-2 px-8 py-4">
       <Sparkles /> {/* Add the sparkles effect */}
 
       <motion.h3
@@ -95,7 +95,7 @@ export default function Slide3() {
           return (
             <Fragment key={i}>
               <motion.div
-                className="px-6 py-4 mb-2 rounded-xl border-2 backdrop-blur-sm"
+                className="max-sm:px-4 max-sm:py-3 px-6 py-4 mb-2 rounded-xl border-2 backdrop-blur-sm"
                 style={{ background: step.bg, borderColor: step.border, width }}
                 variants={{
                   hidden: { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
@@ -110,19 +110,19 @@ export default function Slide3() {
                 animate="visible"
                 whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
               >
-                <div className="flex items-center gap-4 w-full">
+                <div className="flex items-center max-sm:gap-2 gap-4 w-full">
                   {/* Icon component would go here, assuming it's defined elsewhere */}
-                  <span className="text-lg font-bold" style={{ color: step.text, fontFamily: 'var(--font-body)' }}>
+                  <span className="max-sm:text-sm text-lg font-bold" style={{ color: step.text, fontFamily: 'var(--font-body)' }}>
                     {step.title}
                   </span>
-                  <span className="text-sm text-white/60" style={{ fontFamily: 'var(--font-body)' }}>
+                  <span className="max-sm:text-xs text-sm text-white/60" style={{ fontFamily: 'var(--font-body)' }}>
                     {step.subtitle}
                   </span>
                 </div>
               </motion.div>
               {i < 5 - 1 && ( // Assuming 5 steps, adjust if the actual number is different
                 <motion.div
-                  className="w-0.5 bg-gradient-to-b from-rosa/40 to-rosa/10"
+                  className="w-0.5 bg-gradient-to-b from-rosa/40 to-rosa/10 max-sm:!h-2"
                   style={{ height: 18 }}
                   initial={{ height: 0 }}
                   animate={{ height: 18 }}
@@ -135,14 +135,14 @@ export default function Slide3() {
       </div>
 
       <motion.div
-        className="mt-10 px-8 py-6 rounded-2xl text-center bg-gradient-to-r from-rosa via-[#f43f5e] to-rosa text-white relative z-10"
+        className="max-sm:mt-6 mt-10 max-sm:px-4 max-sm:py-4 px-8 py-6 rounded-2xl text-center bg-gradient-to-r from-rosa via-[#f43f5e] to-rosa text-white relative z-10"
         style={{ fontFamily: 'var(--font-body)' }}
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1, boxShadow: '0 0 40px rgba(246,100,150,0.4)' }}
         transition={{ duration: 0.7, delay: 0.2 * 5 + 0.6 }}
       >
-        <p className="text-xl font-black uppercase mb-1">El problema: FALTA SISTEMA</p>
-        <p className="text-md italic text-white/90">No es el contenido. Es la estrategia.</p>
+        <p className="max-sm:text-base text-xl font-black uppercase mb-1">El problema: FALTA SISTEMA</p>
+        <p className="max-sm:text-sm text-md italic text-white/90">No es el contenido. Es la estrategia.</p>
       </motion.div>
     </div>
   );
