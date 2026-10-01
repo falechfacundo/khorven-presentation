@@ -225,11 +225,11 @@ export default function PlanSection({ prospecto }: PlanSectionProps) {
 
   return (
     <div
-      className="relative w-full min-h-dvh flex flex-col items-center justify-center max-sm:px-4 px-10 py-20 overflow-hidden"
+      className="relative w-full min-h-svh flex flex-col items-center justify-center max-sm:px-4 px-10 max-sm:py-12 py-20 compact:py-8 overflow-hidden"
       style={{ perspective: '1200px' }}
     >
       <motion.h2
-        className="max-sm:text-[28px] text-[56px] font-bold text-white leading-none mb-2 text-center"
+        className="max-sm:text-[28px] text-[56px] compact:text-[40px] font-bold text-white leading-none mb-2 text-center"
         style={{ fontFamily: 'var(--font-display)' }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -239,7 +239,7 @@ export default function PlanSection({ prospecto }: PlanSectionProps) {
       </motion.h2>
 
       <motion.p
-        className="max-sm:text-sm text-[20px] text-white/50 max-sm:mb-4 mb-8 text-center"
+        className="max-sm:text-sm text-[20px] compact:text-base text-white/50 max-sm:mb-4 mb-8 compact:mb-4 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.15 }}
@@ -264,9 +264,9 @@ export default function PlanSection({ prospecto }: PlanSectionProps) {
                     ? `0 0 30px ${withAlpha(colorTema, 0.3)}`
                     : '0 0 30px hsla(81, 85%, 56%, 0.3)',
               }}
-              style={{ transformStyle: 'preserve-3d', minHeight: '420px' }}
+              style={{ transformStyle: 'preserve-3d' }}
             >
-              <div className="flex flex-col h-full p-5">
+              <div className="flex flex-col h-full p-5 compact:p-4">
                 <motion.span
                   className="text-xs font-bold text-white/50 tracking-wider mb-2"
                   initial={{ opacity: 0 }}
@@ -419,7 +419,7 @@ export default function PlanSection({ prospecto }: PlanSectionProps) {
       </div>
 
       <motion.p
-        className="max-sm:mt-3 mt-8 text-center max-w-[800px] max-sm:text-xs text-sm md:text-base text-white/40 leading-relaxed"
+        className="max-sm:mt-3 mt-8 compact:mt-4 text-center max-w-[800px] max-sm:text-xs text-sm md:text-base text-white/40 leading-relaxed"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.6, duration: 0.5 }}

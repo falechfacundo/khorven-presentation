@@ -14,7 +14,7 @@ export default function HeroSection({ prospecto }: HeroSectionProps) {
   const dolorDelay = wordsStart + (intro.length + nombre.length) * 0.1 + 0.3;
 
   return (
-    <div className="relative w-full min-h-dvh flex flex-col items-center justify-center overflow-hidden max-sm:px-4 px-6 py-20">
+    <div className="relative w-full min-h-svh flex flex-col items-center justify-center overflow-hidden max-sm:px-4 px-6 py-20">
       <motion.div
         className="absolute inset-0"
         animate={{

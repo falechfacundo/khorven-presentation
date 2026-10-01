@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Fragment, useMemo } from 'react';
+import { Fragment, useMemo, type CSSProperties } from 'react';
 import type { Prospecto } from '@data/prospectos';
 import { withAlpha } from '@lib/color';
 
@@ -54,11 +54,11 @@ export default function ProblemaSection({ prospecto }: ProblemaSectionProps) {
   const { dolorPrincipal, colorTema } = prospecto;
 
   return (
-    <div className="relative w-full min-h-dvh flex flex-col items-center justify-center overflow-hidden max-sm:px-3 px-8 py-20">
+    <div className="relative w-full min-h-svh flex flex-col items-center justify-center overflow-hidden max-sm:px-3 px-8 max-sm:py-12 py-20 compact:py-8">
       <Sparkles />
 
       <motion.h2
-        className="text-base text-white/60 text-center mb-8 relative z-10"
+        className="text-base text-white/60 text-center max-sm:mb-5 mb-8 compact:mb-4 relative z-10"
         style={{ fontFamily: 'var(--font-body)' }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -71,12 +71,14 @@ export default function ProblemaSection({ prospecto }: ProblemaSectionProps) {
         {pasos.map((paso, i) => (
           <Fragment key={paso.title}>
             <motion.div
-              className="max-sm:px-4 max-sm:py-3 px-6 py-4 mb-2 rounded-xl border-2 backdrop-blur-sm"
+              className="w-(--w) max-sm:w-(--w-sm) max-sm:px-4 max-sm:py-2.5 px-6 py-4 compact:py-2.5 mb-2 compact:mb-1 rounded-xl border-2 backdrop-blur-sm"
               style={{
                 background: paso.alert ? withAlpha(colorTema, 0.35) : '#0f172a',
                 borderColor: paso.alert ? colorTema : '#ffffff',
-                width: `${100 - i * 12}%`,
-              }}
+                // En mobile el embudo se angosta menos para que el texto no se corte
+                '--w': `${100 - i * 12}%`,
+                '--w-sm': `${100 - i * 6}%`,
+              } as CSSProperties}
               initial={{ clipPath: 'inset(100% 0 0 0)', opacity: 0 }}
               animate={{ clipPath: 'inset(0% 0 0 0)', opacity: 1 }}
               transition={{ duration: 0.7, ease: 'easeOut', delay: 0.2 * i }}
@@ -100,7 +102,7 @@ export default function ProblemaSection({ prospecto }: ProblemaSectionProps) {
       </div>
 
       <motion.div
-        className="max-sm:mt-6 mt-10 max-sm:px-4 max-sm:py-4 px-8 py-6 rounded-2xl text-center bg-gradient-to-r from-rosa via-rosa/80 to-rosa text-white relative z-10 max-w-2xl"
+        className="max-sm:mt-6 mt-10 compact:mt-5 max-sm:px-4 max-sm:py-4 px-8 py-6 compact:py-4 rounded-2xl text-center bg-gradient-to-r from-rosa via-rosa/80 to-rosa text-white relative z-10 max-w-2xl"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1, boxShadow: `0 0 40px ${withAlpha(colorTema, 0.4)}` }}
         transition={{ duration: 0.7, delay: 0.2 * pasos.length + 0.6 }}

@@ -17,7 +17,7 @@ export default function ScrollReveal({ id, children, className }: ScrollRevealPr
   const inView = useInView(ref, { once: true, amount: 0.25 });
 
   return (
-    <section id={id} ref={ref} className={cn('relative w-full min-h-dvh', className)}>
+    <section id={id} ref={ref} className={cn('relative w-full min-h-svh', className)}>
       {inView ? children : null}
     </section>
   );

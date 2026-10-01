@@ -19,7 +19,7 @@ const PROSPECTOS: readonly Prospecto[] = [
     colorTema: '#C8102E',
     logoUrl: '/prospectos/la-cabrera.svg',
     whatsappLink:
-      'https://wa.me/5491100000000?text=Hola%20Facundo%2C%20vi%20la%20propuesta%20para%20La%20Cabrera%20Palermo',
+      'https://wa.me/5491127329540?text=Hola%20Ezequiel%2C%20vi%20la%20propuesta%20para%20La%20Cabrera%20Palermo',
   },
   {
     id: '002',
@@ -29,7 +29,7 @@ const PROSPECTOS: readonly Prospecto[] = [
     colorTema: '#0EA5E9',
     logoUrl: '/prospectos/clinica-dental-belgrano.svg',
     whatsappLink:
-      'https://wa.me/5491100000000?text=Hola%20Facundo%2C%20vi%20la%20propuesta%20para%20Cl%C3%ADnica%20Dental%20Belgrano',
+      'https://wa.me/5491127329540?text=Hola%20Ezequiel%2C%20vi%20la%20propuesta%20para%20Cl%C3%ADnica%20Dental%20Belgrano',
   },
 ];
 

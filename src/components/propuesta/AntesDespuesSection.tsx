@@ -40,11 +40,11 @@ function PanelItem({ text, delay, isBefore }: { text: string; delay: number; isB
 export default function AntesDespuesSection({ prospecto }: AntesDespuesSectionProps) {
   return (
     <div
-      className="relative w-full min-h-dvh flex flex-col items-center justify-center max-sm:px-4 px-[60px] py-20 overflow-hidden"
+      className="relative w-full min-h-svh flex flex-col items-center justify-center max-sm:px-4 px-[60px] max-sm:py-12 py-20 compact:py-8 overflow-hidden"
       style={{ perspective: '1200px' }}
     >
       <motion.h2
-        className="max-sm:text-[28px] text-[48px] font-bold text-white leading-none mb-2 text-center"
+        className="max-sm:text-[28px] text-[48px] compact:text-[36px] font-bold text-white leading-none mb-2 text-center"
         style={{ fontFamily: 'var(--font-display)' }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -54,7 +54,7 @@ export default function AntesDespuesSection({ prospecto }: AntesDespuesSectionPr
       </motion.h2>
 
       <motion.p
-        className="max-sm:text-sm text-lg text-white/60 max-sm:mb-6 mb-10 text-center"
+        className="max-sm:text-sm text-lg text-white/60 max-sm:mb-6 mb-10 compact:mb-5 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.1 }}
@@ -64,7 +64,7 @@ export default function AntesDespuesSection({ prospecto }: AntesDespuesSectionPr
 
       <div className="grid max-sm:grid-cols-1 grid-cols-2 max-sm:gap-4 gap-8 w-full max-w-[1200px]">
         <motion.div
-          className="rounded-2xl border border-white/10 max-sm:p-5 p-10 flex flex-col relative overflow-hidden sm:min-h-[460px]"
+          className="rounded-2xl border border-white/10 max-sm:p-5 p-10 compact:p-6 flex flex-col relative overflow-hidden"
           style={{ filter: 'grayscale(80%) brightness(0.85)', transformStyle: 'preserve-3d' }}
           initial={{ rotateY: -45, opacity: 0, x: -50 }}
           animate={{ rotateY: 0, opacity: 1, x: 0, transition: { duration: 0.7, ease: 'easeOut' } }}
@@ -79,12 +79,12 @@ export default function AntesDespuesSection({ prospecto }: AntesDespuesSectionPr
             ANTES
           </motion.p>
           <motion.div
-            className="h-px bg-rosa/20 max-sm:mb-4 mb-8 w-full origin-left"
+            className="h-px bg-rosa/20 max-sm:mb-4 mb-8 compact:mb-4 w-full origin-left"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 0.4, delay: 0.3 }}
           />
-          <div className="flex flex-col max-sm:gap-3 gap-5 flex-1">
+          <div className="flex flex-col max-sm:gap-3 gap-5 compact:gap-3 flex-1">
             {antesItems.map((item, i) => (
               <PanelItem key={item} text={item} delay={0.4 + i * 0.1} isBefore />
             ))}
@@ -102,7 +102,7 @@ export default function AntesDespuesSection({ prospecto }: AntesDespuesSectionPr
         </motion.div>
 
         <motion.div
-          className="rounded-2xl border-2 border-verde max-sm:p-5 p-10 flex flex-col relative overflow-hidden sm:min-h-[460px]"
+          className="rounded-2xl border-2 border-verde max-sm:p-5 p-10 compact:p-6 flex flex-col relative overflow-hidden"
           style={{
             background: 'linear-gradient(180deg, hsla(81,85%,56%,0.06) 0%, #0a0e27 100%)',
             boxShadow: 'inset 0 0 60px hsla(81,85%,56%,0.08)',
@@ -121,12 +121,12 @@ export default function AntesDespuesSection({ prospecto }: AntesDespuesSectionPr
             DESPUÉS
           </motion.p>
           <motion.div
-            className="h-0.5 bg-verde max-sm:mb-4 mb-8 w-full origin-left"
+            className="h-0.5 bg-verde max-sm:mb-4 mb-8 compact:mb-4 w-full origin-left"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 0.4, delay: 0.7 }}
           />
-          <div className="flex flex-col max-sm:gap-3 gap-5 flex-1">
+          <div className="flex flex-col max-sm:gap-3 gap-5 compact:gap-3 flex-1">
             {despuesItems.map((item, i) => (
               <PanelItem key={item} text={item} delay={0.8 + i * 0.1} isBefore={false} />
             ))}
@@ -145,7 +145,7 @@ export default function AntesDespuesSection({ prospecto }: AntesDespuesSectionPr
       </div>
 
       <motion.p
-        className="max-sm:text-lg text-2xl font-bold text-white text-center max-sm:mt-6 mt-10"
+        className="max-sm:text-lg text-2xl font-bold text-white text-center max-sm:mt-6 mt-10 compact:mt-5"
         style={{ fontFamily: 'var(--font-display)' }}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}

@@ -9,9 +9,9 @@ interface CierreSectionProps {
 }
 
 const pasos = [
-  'Elegís el paquete por WhatsApp.',
-  'Llamada de 15 min para mapear el flujo.',
-  'Empezamos a construir en 48hs.',
+  'Elegís el paquete y nos escribís.',
+  'Coordinamos una llamada de 15 min para mapear tu flujo.',
+  'Empezamos a construir y lanzar en 48-72 horas.',
 ];
 
 function AnimatedGrid() {
@@ -56,24 +56,30 @@ export default function CierreSection({ prospecto }: CierreSectionProps) {
   const { nombreNegocio, colorTema, logoUrl, whatsappLink } = prospecto;
   const headline = 'Próximos pasos';
   const pasosStart = 0.5 + headline.length * 0.04 + 0.3;
-  const ctaDelay = pasosStart + pasos.length * 0.3 + 0.4;
+  const textoDelay = pasosStart + pasos.length * 0.3 + 0.2;
+  const ctaDelay = textoDelay + 0.4;
+
+  // Solo dígitos del número (sin +, espacios ni guiones), tomado del link de wa.me del prospecto.
+  const whatsappNumber = new URL(whatsappLink).pathname.replace(/[^0-9]/g, '');
+  const mensajePrellenado = `Hola Ezequiel, vi la propuesta para ${nombreNegocio}. Me interesa ver cómo funcionaría el Paquete Sistema para automatizar nuestras consultas.`;
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensajePrellenado)}`;
 
   return (
-    <div className="relative w-full min-h-dvh flex flex-col items-center justify-center overflow-hidden max-sm:px-4 px-6 py-20">
+    <div className="relative w-full min-h-svh flex flex-col items-center justify-center overflow-hidden max-sm:px-4 px-6 max-sm:py-12 py-20 compact:py-8">
       <AnimatedGrid />
 
       <div className="relative z-10 flex flex-col items-center w-full max-w-2xl">
         <motion.img
           src={logoUrl}
           alt={`Logo de ${nombreNegocio}`}
-          className="max-sm:h-10 h-12 w-auto object-contain mb-5"
+          className="max-sm:h-10 h-12 compact:h-10 w-auto object-contain mb-5 compact:mb-3"
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
         />
 
         <h2
-          className="max-sm:text-3xl text-4xl md:text-5xl lg:text-6xl font-bold text-white max-sm:mb-8 mb-10 text-center"
+          className="max-sm:text-3xl text-4xl md:text-5xl lg:text-6xl compact:text-[44px]! font-bold text-white max-sm:mb-8 mb-10 compact:mb-5 text-center"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           {headline.split('').map((char, i) => (
@@ -94,7 +100,7 @@ export default function CierreSection({ prospecto }: CierreSectionProps) {
             return (
               <Fragment key={paso}>
                 <motion.li
-                  className="flex items-center max-sm:gap-3 gap-4 rounded-xl border border-white/15 bg-navy/80 backdrop-blur-sm max-sm:p-4 p-5"
+                  className="flex items-center max-sm:gap-3 gap-4 rounded-xl border border-white/15 bg-navy/80 backdrop-blur-sm max-sm:p-4 p-5 compact:py-3.5"
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay, duration: 0.5, ease: 'easeOut' }}
@@ -123,16 +129,26 @@ export default function CierreSection({ prospecto }: CierreSectionProps) {
           })}
         </ol>
 
+        <motion.p
+          className="text-gray-400 text-sm mb-6 text-center max-w-md max-sm:mt-8 mt-10 compact:mt-6 compact:mb-4"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: textoDelay, duration: 0.5, ease: 'easeOut' }}
+        >
+          Sin compromisos ni llamadas eternas. Si te hace sentido, respondé este mensaje y coordinamos 15
+          minutos esta semana para ver si encajamos.
+        </motion.p>
+
         <motion.div
-          className="max-sm:mt-10 mt-12 max-sm:w-full"
+          className="w-full md:w-auto"
           animate={{ scale: [1, 1.02, 1] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: ctaDelay + 0.9 }}
         >
           <motion.a
-            href={whatsappLink}
+            href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative flex items-center justify-center gap-3 max-sm:px-6 max-sm:py-4 px-12 py-5 rounded-full bg-rosa text-white font-bold max-sm:text-lg text-xl md:text-2xl overflow-hidden"
+            className="relative flex items-center justify-center gap-3 max-sm:px-6 max-sm:py-4 px-10 py-5 compact:py-4 rounded-full bg-rosa text-white font-bold text-center leading-snug max-sm:text-base text-lg md:text-xl overflow-hidden"
             style={{ fontFamily: 'var(--font-display)' }}
             initial={{ opacity: 0, y: 30 }}
             animate={{
@@ -158,7 +174,7 @@ export default function CierreSection({ prospecto }: CierreSectionProps) {
               transition={{ duration: 1.5, repeat: Infinity, ease: 'linear', delay: ctaDelay + 0.9, repeatDelay: 1 }}
             />
             <MessageCircle className="relative z-10 shrink-0" size={24} aria-hidden />
-            <span className="relative z-10">Hablar con Facundo ahora</span>
+            <span className="relative z-10">Me interesa ver cómo funciona en {nombreNegocio}</span>
           </motion.a>
         </motion.div>
       </div>

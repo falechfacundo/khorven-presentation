@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Check, MessageCircle, Sparkles } from 'lucide-react';
+import { Check, MessageCircle, Plus, Sparkles } from 'lucide-react';
 import type { Prospecto } from '@data/prospectos';
 import { withAlpha } from '@lib/color';
 import { cn } from '@lib/utils';
@@ -10,28 +10,33 @@ interface PaquetesSectionProps {
 
 interface Paquete {
   nombre: string;
+  /** Precio mensual en USD */
   precio: number;
+  descripcion: string;
   items: string[];
   recomendado: boolean;
 }
 
 const paquetes: Paquete[] = [
   {
-    nombre: 'Paquete Tracción',
+    nombre: 'Paquete Validación',
     precio: 250,
+    descripcion: 'Ideal para probar el impacto del contenido y el tráfico pagado.',
     items: [
-      '4 Reels mensuales de alto impacto',
-      'Gestión y optimización de Meta Ads',
-      'Reporte mensual de métricas',
+      '4 Reels mensuales de alto impacto (edición profesional).',
+      'Gestión y optimización de campañas en Meta Ads.',
+      'Reporte mensual de métricas (alcance, clics, consultas).',
     ],
     recomendado: false,
   },
   {
     nombre: 'Paquete Sistema',
-    precio: 350,
+    precio: 450,
+    descripcion: 'Tráfico + Destino + Conversión automática. El sistema se paga solo.',
     items: [
-      'Todo lo del Paquete Tracción',
-      'Automatización (n8n/Python): respuesta a leads en <1 min y derivación a WhatsApp/CRM',
+      'Todo lo incluido en el Paquete Validación.',
+      '+ Desarrollo de Landing Page de alta conversión (One-Page) para capturar leads de los anuncios.',
+      '+ Automatización (n8n/Python): Respuesta a leads en <1 minuto y derivación directa a WhatsApp o CRM.',
     ],
     recomendado: true,
   },
@@ -42,11 +47,11 @@ export default function PaquetesSection({ prospecto }: PaquetesSectionProps) {
 
   return (
     <div
-      className="relative w-full min-h-dvh flex flex-col items-center justify-center max-sm:px-4 px-[60px] py-20 overflow-hidden"
+      className="relative w-full min-h-svh flex flex-col items-center justify-center max-sm:px-4 px-[60px] max-sm:py-12 py-20 compact:py-8 overflow-hidden"
       style={{ perspective: '1200px' }}
     >
       <motion.h2
-        className="max-sm:text-[28px] text-[48px] font-bold text-white leading-none mb-2 text-center"
+        className="max-sm:text-[28px] text-[48px] compact:text-[36px] font-bold text-white leading-none mb-2 text-center"
         style={{ fontFamily: 'var(--font-display)' }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -56,7 +61,7 @@ export default function PaquetesSection({ prospecto }: PaquetesSectionProps) {
       </motion.h2>
 
       <motion.p
-        className="max-sm:text-sm text-lg text-white/60 max-sm:mb-8 mb-12 text-center"
+        className="max-sm:text-sm text-lg text-white/60 max-sm:mb-8 mb-12 compact:mb-7 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.1 }}
@@ -71,7 +76,7 @@ export default function PaquetesSection({ prospecto }: PaquetesSectionProps) {
             <motion.div
               key={paquete.nombre}
               className={cn(
-                'relative rounded-2xl max-sm:p-6 p-10 flex flex-col bg-navy',
+                'relative rounded-2xl max-sm:p-6 p-10 compact:p-6 flex flex-col bg-navy',
                 paquete.recomendado ? 'border-2 border-rosa' : 'border border-white/15',
               )}
               style={{
@@ -123,7 +128,7 @@ export default function PaquetesSection({ prospecto }: PaquetesSectionProps) {
               </motion.p>
 
               <motion.p
-                className="flex items-baseline gap-1 mb-4"
+                className="flex items-baseline gap-1.5 mb-2"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: baseDelay + 0.4 }}
@@ -131,18 +136,30 @@ export default function PaquetesSection({ prospecto }: PaquetesSectionProps) {
                 <span className="max-sm:text-4xl text-5xl font-bold text-white" style={{ fontFamily: 'var(--font-display)' }}>
                   ${paquete.precio}
                 </span>
-                <span className="text-white/40">/mes</span>
+                <span className="text-white/40">USD / mes</span>
+              </motion.p>
+
+              <motion.p
+                className="max-sm:text-sm text-base text-white/60 mb-4 compact:mb-3"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: baseDelay + 0.45 }}
+              >
+                {paquete.descripcion}
               </motion.p>
 
               <motion.div
-                className={cn('h-px max-sm:mb-4 mb-6 w-full origin-left', paquete.recomendado ? 'bg-rosa' : 'bg-white/15')}
+                className={cn('h-px max-sm:mb-4 mb-6 compact:mb-4 w-full origin-left', paquete.recomendado ? 'bg-rosa' : 'bg-white/15')}
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ duration: 0.4, delay: baseDelay + 0.5 }}
               />
 
-              <div className="flex flex-col max-sm:gap-3 gap-4 flex-1">
-                {paquete.items.map((item, j) => (
+              <div className="flex flex-col max-sm:gap-3 gap-4 compact:gap-3 flex-1">
+                {paquete.items.map((item, j) => {
+                  const esExtra = item.startsWith('+ ');
+                  const Icon = esExtra ? Plus : Check;
+                  return (
                   <motion.div
                     key={item}
                     className="flex items-start max-sm:gap-2 gap-3 max-sm:text-sm text-base"
@@ -150,10 +167,11 @@ export default function PaquetesSection({ prospecto }: PaquetesSectionProps) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: baseDelay + 0.6 + j * 0.1, duration: 0.35, ease: 'easeOut' }}
                   >
-                    <Check size={18} className="shrink-0 mt-0.5 text-verde" />
-                    <span className="text-white/85">{item}</span>
+                    <Icon size={18} className={cn('shrink-0 mt-0.5', esExtra ? 'text-rosa' : 'text-verde')} />
+                    <span className="text-white/85">{esExtra ? item.slice(2) : item}</span>
                   </motion.div>
-                ))}
+                  );
+                })}
               </div>
 
               <motion.a
@@ -161,7 +179,7 @@ export default function PaquetesSection({ prospecto }: PaquetesSectionProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
-                  'mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-bold transition-colors',
+                  'mt-8 compact:mt-5 inline-flex items-center justify-center gap-2 rounded-full max-sm:px-4 px-6 py-3 max-sm:text-sm font-bold whitespace-nowrap transition-colors',
                   paquete.recomendado
                     ? 'bg-rosa text-white'
                     : 'border border-white/30 text-white hover:border-rosa hover:text-rosa',
