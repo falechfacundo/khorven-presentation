@@ -4,8 +4,8 @@ export interface Prospecto {
   dolorPrincipal: string;
   /** Código HEX, ej: "#C8102E" */
   colorTema: string;
-  /** Ruta relativa a /public, ej: "/prospectos/la-cabrera.svg" */
-  logoUrl: string;
+  /** Ruta relativa a /public, ej: "/prospectos/la-cabrera.png". Omitir si no hay logo real. */
+  logoUrl?: string;
   /** URL completa de wa.me */
   whatsappLink: string;
 }
@@ -17,7 +17,6 @@ const PROSPECTOS: readonly Prospecto[] = [
     dolorPrincipal:
       'El 40% de las reservas se pierden por demora en la respuesta por Instagram y WhatsApp.',
     colorTema: '#C8102E',
-    logoUrl: '/prospectos/la-cabrera.svg',
     whatsappLink:
       'https://wa.me/5491127329540?text=Hola%20Ezequiel%2C%20vi%20la%20propuesta%20para%20La%20Cabrera%20Palermo',
   },
@@ -27,7 +26,6 @@ const PROSPECTOS: readonly Prospecto[] = [
     dolorPrincipal:
       '6 de cada 10 consultas por turnos llegan fuera de horario y nadie las responde hasta el día siguiente.',
     colorTema: '#0EA5E9',
-    logoUrl: '/prospectos/clinica-dental-belgrano.svg',
     whatsappLink:
       'https://wa.me/5491127329540?text=Hola%20Ezequiel%2C%20vi%20la%20propuesta%20para%20Cl%C3%ADnica%20Dental%20Belgrano',
   },

@@ -30,7 +30,7 @@ const title = `Propuesta — ${prospecto.nombreNegocio}`;
     <meta name="description" content={prospecto.dolorPrincipal} />
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content={prospecto.colorTema} />
-    <link rel="icon" href={prospecto.logoUrl} />
+    {prospecto.logoUrl && <link rel="icon" href={prospecto.logoUrl} />}
     <title>{title}</title>
   </head>
   <body>

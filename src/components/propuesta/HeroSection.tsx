@@ -28,14 +28,16 @@ export default function HeroSection({ prospecto }: HeroSectionProps) {
       />
 
       <div className="relative z-10 flex flex-col items-center">
-        <motion.img
-          src={logoUrl}
-          alt={`Logo de ${nombreNegocio}`}
-          className="max-sm:h-16 h-20 md:h-24 w-auto object-contain"
-          initial={{ opacity: 0, scale: 0.85, y: 15 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        />
+        {logoUrl && (
+          <motion.img
+            src={logoUrl}
+            alt={`Logo de ${nombreNegocio}`}
+            className="max-sm:h-16 h-20 md:h-24 w-auto object-contain"
+            initial={{ opacity: 0, scale: 0.85, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          />
+        )}
 
         <motion.p
           className="max-sm:text-[11px] text-xs md:text-sm font-medium tracking-[0.3em] uppercase mt-6 text-white/50 text-center"
