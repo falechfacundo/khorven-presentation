@@ -8,7 +8,6 @@
       "@config/*": ["src/config/*"],
       "@data/*": ["src/data/*"],
       "@lib/*": ["src/lib/*"],
-      "@blocks/*": ["src/blocks/*"],
       "@components/*": ["src/components/*"]
     }
   }

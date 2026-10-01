@@ -1,79 +1,49 @@
-# Presentation Hub
+# Propuestas comerciales
 
-Landing hub para propuestas de Ad Astra, construido con Astro, React islands y Tailwind CSS v4.
+Generador de propuestas comerciales personalizadas por cliente, construido con Astro, React islands, Tailwind CSS v4 y Framer Motion.
 
 ## Stack
 
-- Astro 6
+- Astro 6 (output estático, adapter de Vercel)
 - React 19 (islands)
 - Tailwind CSS v4
+- Framer Motion
 - TypeScript estricto
 
-## Estructura Principal
+## Rutas
 
-- src/pages/index.astro: entrypoint del hub
-- src/layouts/BaseLayout.astro: shell HTML y metadatos
-- src/blocks: secciones principales de la landing
-- src/components/react: islands interactivos
-- src/components/ui: componentes atomicos Astro
-- src/config: configuracion de sitio y servicios
-- src/data: source of truth de contenido
-- src/lib: utilidades y parseo de params
-- src/styles/global.css: design system y utilidades globales
+- `/`: propuesta genérica ("… para tu negocio").
+- `/propuesta/[id]`: propuesta personalizada para un prospecto (ej: `/propuesta/001`). Se generan en build una por prospecto; un id inexistente da 404.
+
+## Estructura
+
+- `src/pages/`: `index.astro` (raíz) y `propuesta/[id].astro`.
+- `src/layouts/PropuestaLayout.astro`: shell HTML compartido por ambas rutas.
+- `src/components/react/PropuestaView.tsx`: arma la página y aplica el color del prospecto.
+- `src/components/propuesta/`: secciones (Hero, Problema, Demo, Plan, Antes/Después, Paquetes, Cierre) y primitivas compartidas en `ui.tsx`.
+- `src/data/prospectos.ts`: datos de los prospectos y funciones de acceso (`getProspectoById`, etc.), aisladas para migrar a Cloudflare D1 sin tocar la UI.
+- `src/config/firma.ts`: quién firma las propuestas (agregar `fotoUrl` para mostrar una foto).
+- `src/lib/whatsapp.ts`: arma los links de WhatsApp con mensaje prellenado.
+- `src/styles/global.css`: tokens de tema, tipografías y utilidades de animación.
+
+## Agregar un prospecto
+
+Sumar un objeto en `src/data/prospectos.ts`:
+
+```ts
+{
+  id: '003',
+  nombreNegocio: 'Nombre del negocio',
+  dolorPrincipal: 'El dolor principal, en una frase.',
+  colorTema: '#0EA5E9',
+  logoUrl: '/prospectos/logo.png', // opcional: solo si hay logo real en public/prospectos
+  whatsappLink: 'https://wa.me/5491127329540',
+}
+```
 
 ## Comandos
 
-Ejecutar desde la raiz del proyecto.
-
-- pnpm install: instala dependencias
-- pnpm dev: inicia desarrollo en localhost:4321
-- pnpm build: genera build de produccion en dist
-- pnpm preview: sirve localmente el build generado
-
-## Build de Produccion
-
-1. pnpm install
-2. pnpm build
-3. verificar salida en dist
-
-## URL y Parametros
-
-La app expone una unica ruta publica:
-
-- /
-
-La personalizacion del contenido se hace por query params:
-
-- service: landing | ecommerce | bot
-- industry: retail | startup | local | saas | default
-- client: texto libre opcional
-- lang: es | en
-- platform | plataforma: default | workana
-
-Defaults si no se envia nada o llega un valor invalido:
-
-- service=landing
-- industry=default
-- lang=es
-- client=null
-- platform=default
-
-Ejemplos:
-
-- /?service=landing
-- /?service=bot&industry=saas&client=Acme&lang=en
-- /?service=bot&industry=saas&client=Acme&platform=workana
-
-## Publicacion en GitHub
-
-Si es la primera vez que subis este proyecto al remoto:
-
-1. git branch -M main
-2. git remote add origin https://github.com/falechfacundo/presentation-hub.git
-3. git push -u origin main
-
-Si el remoto ya existe y solo queres subir cambios nuevos:
-
-1. git add -A
-2. git commit -m "chore: actualiza proyecto"
-3. git push
+- `pnpm install`: instala dependencias
+- `pnpm dev`: desarrollo en localhost:4321
+- `pnpm build`: build de producción en `dist`
+- `pnpm preview`: sirve localmente el build
