@@ -1,7 +1,6 @@
 ---
-import '../../styles/global.css';
 import type { GetStaticPaths } from 'astro';
-import PropuestaView from '@/components/react/PropuestaView';
+import PropuestaLayout from '@/layouts/PropuestaLayout.astro';
 import { getAllProspectoIds, getProspectoById } from '@data/prospectos';
 
 // Equivalente a generateStaticParams: solo estos IDs se generan en build;
@@ -18,25 +17,6 @@ const prospecto = id ? await getProspectoById(id) : null;
 if (!prospecto) {
   return new Response(null, { status: 404, statusText: 'Not found' });
 }
-
-const title = `Propuesta — ${prospecto.nombreNegocio}`;
 ---
 
-<!doctype html>
-<html lang="es" style="background-color:#060608">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={prospecto.dolorPrincipal} />
-    <meta name="robots" content="noindex, nofollow" />
-    <meta name="theme-color" content={prospecto.colorTema} />
-    {prospecto.logoUrl && <link rel="icon" href={prospecto.logoUrl} />}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
-    <title>{title}</title>
-  </head>
-  <body>
-    <PropuestaView client:load prospecto={prospecto} />
-  </body>
-</html>
+<PropuestaLayout prospecto={prospecto} title={`Propuesta — ${prospecto.nombreNegocio}`} />

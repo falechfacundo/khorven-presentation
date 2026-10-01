@@ -3,7 +3,7 @@ import { ArrowUpRight, Check, Plus, Sparkles } from 'lucide-react';
 import type { ReactNode } from 'react';
 import type { Prospecto } from '@data/prospectos';
 import { cn } from '@lib/utils';
-import { getWhatsappUrl } from '@lib/whatsapp';
+import { getWhatsappUrl, nombreEnMensaje } from '@lib/whatsapp';
 import { CountUp, EASE, Eyebrow, RevealText, words } from './ui';
 
 interface PaquetesSectionProps {
@@ -93,11 +93,11 @@ export default function PaquetesSection({ prospecto }: PaquetesSectionProps) {
               <TiltCard>
                 {p.recomendado ? (
                   <div className="border-spin h-full rounded-[1.75rem] p-px shadow-[0_30px_100px_-40px_var(--color-accent)]">
-                    <CardBody paquete={p} href={getWhatsappUrl(prospecto, p.mensaje(prospecto.nombreNegocio))} />
+                    <CardBody paquete={p} href={getWhatsappUrl(prospecto, p.mensaje(nombreEnMensaje(prospecto)))} />
                   </div>
                 ) : (
                   <div className="h-full rounded-[1.75rem] border border-white/10">
-                    <CardBody paquete={p} href={getWhatsappUrl(prospecto, p.mensaje(prospecto.nombreNegocio))} />
+                    <CardBody paquete={p} href={getWhatsappUrl(prospecto, p.mensaje(nombreEnMensaje(prospecto)))} />
                   </div>
                 )}
               </TiltCard>

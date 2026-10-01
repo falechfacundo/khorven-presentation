@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion';
 import { Check, CheckCheck, ChevronLeft, Phone, Store, Video, Zap } from 'lucide-react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import type { Prospecto } from '@data/prospectos';
+import { esProspectoGenerico, type Prospecto } from '@data/prospectos';
 import { cn } from '@lib/utils';
 import { EASE, Eyebrow, FadeUp, RevealText, words } from './ui';
 
@@ -107,7 +107,11 @@ export default function DemoSection({ prospecto }: DemoSectionProps) {
           <FloatingChip className="-right-20 bottom-36 hidden xl:flex" delay={0.6}>
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Activo 24/7
           </FloatingChip>
-          <PhoneChat nombre={prospecto.nombreNegocio} stage={stage} />
+          <PhoneChat
+            nombre={esProspectoGenerico(prospecto) ? 'Tu negocio' : prospecto.nombreNegocio}
+            saludo={esProspectoGenerico(prospecto) ? 'Gracias por escribirnos.' : `Gracias por escribir a ${prospecto.nombreNegocio}.`}
+            stage={stage}
+          />
         </div>
       </div>
     </section>
@@ -133,7 +137,7 @@ function FloatingChip({ children, className, delay }: { children: ReactNode; cla
 
 /* ── Mockup del celular ─────────────────────────────────── */
 
-function PhoneChat({ nombre, stage }: { nombre: string; stage: number }) {
+function PhoneChat({ nombre, saludo, stage }: { nombre: string; saludo: string; stage: number }) {
   return (
     <motion.div
       className="relative w-[290px] rounded-[2.8rem] border border-white/15 bg-[#0b0b0d] p-2.5 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)] sm:w-[320px]"
@@ -195,7 +199,7 @@ function PhoneChat({ nombre, stage }: { nombre: string; stage: number }) {
             {stage === 1 && <Typing key="t1" />}
             {stage >= 2 && (
               <Bubble key="m2" side="out" time="23:47" badge>
-                ¡Hola! 👋 Gracias por escribir a {nombre}. Sí, tenemos disponibilidad. ¿Qué día y horario te queda mejor?
+                ¡Hola! 👋 {saludo} Sí, tenemos disponibilidad. ¿Qué día y horario te queda mejor?
               </Bubble>
             )}
             {stage >= 3 && <Bubble key="m3" side="in" time="23:48">El jueves a la tarde</Bubble>}

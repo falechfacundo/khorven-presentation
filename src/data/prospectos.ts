@@ -31,6 +31,22 @@ const PROSPECTOS: readonly Prospecto[] = [
   },
 ];
 
+/** Propuesta genérica que se muestra en la raíz del sitio, sin un cliente puntual. */
+export const PROSPECTO_GENERICO_ID = 'general';
+
+const PROSPECTO_GENERICO: Prospecto = {
+  id: PROSPECTO_GENERICO_ID,
+  nombreNegocio: 'tu negocio',
+  dolorPrincipal:
+    'La mayoría de las consultas que llegan por redes se responden tarde y se pierden antes de convertirse en clientes.',
+  colorTema: '#FE3D6A',
+  whatsappLink: 'https://wa.me/5491127329540',
+};
+
+export function esProspectoGenerico(prospecto: Prospecto): boolean {
+  return prospecto.id === PROSPECTO_GENERICO_ID;
+}
+
 /*
  * Capa de acceso a datos. Los componentes UI solo dependen de estas funciones,
  * así que migrar a Cloudflare D1 implica cambiar únicamente su implementación
@@ -38,6 +54,10 @@ const PROSPECTOS: readonly Prospecto[] = [
  */
 export async function getProspectoById(id: string): Promise<Prospecto | null> {
   return PROSPECTOS.find((p) => p.id === id) ?? null;
+}
+
+export async function getProspectoGenerico(): Promise<Prospecto> {
+  return PROSPECTO_GENERICO;
 }
 
 export async function getAllProspectoIds(): Promise<string[]> {
