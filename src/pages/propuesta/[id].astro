@@ -1,0 +1,39 @@
+---
+import '../../styles/global.css';
+import type { GetStaticPaths } from 'astro';
+import PropuestaView from '@/components/react/PropuestaView';
+import { getAllProspectoIds, getProspectoById } from '@data/prospectos';
+
+// Equivalente a generateStaticParams: solo estos IDs se generan en build;
+// cualquier otro ID responde 404.
+export const getStaticPaths = (async () => {
+  const ids = await getAllProspectoIds();
+  return ids.map((id) => ({ params: { id } }));
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+const prospecto = id ? await getProspectoById(id) : null;
+
+// Equivalente a notFound() (relevante si la página pasa a SSR con D1).
+if (!prospecto) {
+  return new Response(null, { status: 404, statusText: 'Not found' });
+}
+
+const title = `Propuesta — ${prospecto.nombreNegocio}`;
+---
+
+<!doctype html>
+<html lang="es" style="background-color:#0a0e27">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={prospecto.dolorPrincipal} />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content={prospecto.colorTema} />
+    <link rel="icon" href={prospecto.logoUrl} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <PropuestaView client:load prospecto={prospecto} />
+  </body>
+</html>
