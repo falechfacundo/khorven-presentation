@@ -1,8 +1,10 @@
-import { motion } from 'framer-motion';
-import { Check, MessageCircle, Plus, Sparkles } from 'lucide-react';
+import { motion, useReducedMotion, useSpring } from 'framer-motion';
+import { ArrowUpRight, Check, Plus, Sparkles } from 'lucide-react';
+import type { ReactNode } from 'react';
 import type { Prospecto } from '@data/prospectos';
-import { withAlpha } from '@lib/color';
 import { cn } from '@lib/utils';
+import { getWhatsappUrl } from '@lib/whatsapp';
+import { CountUp, EASE, Eyebrow, RevealText, words } from './ui';
 
 interface PaquetesSectionProps {
   prospecto: Prospecto;
@@ -10,193 +12,201 @@ interface PaquetesSectionProps {
 
 interface Paquete {
   nombre: string;
-  /** Precio mensual en USD */
+  /** Precio mensual de lanzamiento en USD */
   precio: number;
-  descripcion: string;
+  notaPrecio: string;
   items: string[];
   recomendado: boolean;
+  cta: string;
+  mensaje: (nombreNegocio: string) => string;
 }
+
+const NOTA_PAUTA = '*El presupuesto de pauta se paga directamente a Meta.';
 
 const paquetes: Paquete[] = [
   {
     nombre: 'Paquete Validación',
-    precio: 250,
-    descripcion: 'Ideal para probar el impacto del contenido y el tráfico pagado.',
+    precio: 150,
+    notaPrecio: 'Precio de lanzamiento (primeros 5 clientes). Luego $250/mes.',
     items: [
-      '4 Reels mensuales de alto impacto (edición profesional).',
+      '4 Reels mensuales de alto impacto.',
       'Gestión y optimización de campañas en Meta Ads.',
-      'Reporte mensual de métricas (alcance, clics, consultas).',
+      'Reporte mensual de métricas.',
     ],
     recomendado: false,
+    cta: 'Elegir Validación',
+    mensaje: (nombreNegocio) =>
+      `Hola Ezequiel, vi la propuesta para ${nombreNegocio}. Me interesa arrancar con el Paquete Validación para probar el impacto del contenido y las campañas.`,
   },
   {
     nombre: 'Paquete Sistema',
-    precio: 450,
-    descripcion: 'Tráfico + Destino + Conversión automática. El sistema se paga solo.',
+    precio: 250,
+    notaPrecio: 'Precio de lanzamiento (primeros 5 clientes). Luego $450/mes.',
     items: [
-      'Todo lo incluido en el Paquete Validación.',
-      '+ Desarrollo de Landing Page de alta conversión (One-Page) para capturar leads de los anuncios.',
-      '+ Automatización (n8n/Python): Respuesta a leads en <1 minuto y derivación directa a WhatsApp o CRM.',
+      'Todo lo incluido en Validación.',
+      '+ Landing Page de alta conversión (One-Page) incluida.',
+      '+ Automatización (n8n/Python): Respuesta a leads en <1 min y derivación a WhatsApp/CRM.',
     ],
     recomendado: true,
+    cta: 'Elegir Sistema',
+    mensaje: (nombreNegocio) =>
+      `Hola Ezequiel, vi la propuesta para ${nombreNegocio}. Me interesa el Paquete Sistema para implementar la landing page y la automatización de consultas.`,
   },
 ];
 
 export default function PaquetesSection({ prospecto }: PaquetesSectionProps) {
-  const { nombreNegocio, colorTema, whatsappLink } = prospecto;
+  return (
+    <section id="paquetes" className="relative py-24 sm:py-32 compact:py-16">
+      <div
+        aria-hidden
+        className="absolute left-1/2 top-1/2 h-[50vmax] w-[70vmax] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[140px]"
+        style={{ background: 'radial-gradient(ellipse, color-mix(in srgb, var(--color-accent) 12%, transparent), transparent 65%)' }}
+      />
+
+      <div className="relative mx-auto max-w-6xl px-5 sm:px-10">
+        <div className="text-center">
+          <Eyebrow index="05" className="justify-center">Inversión</Eyebrow>
+          <RevealText
+            items={[...words('Elegí cómo'), ...words('empezar.', 'font-serif italic font-normal text-accent')]}
+            className="mt-4 text-[clamp(2rem,4.6vw,4rem)] font-bold leading-[1.02] tracking-[-0.02em] text-white"
+          />
+          <motion.p
+            className="mx-auto mt-4 max-w-xl text-base text-white/55 sm:text-lg"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          >
+            Dos formas de arrancar. Una sola meta: más clientes para {prospecto.nombreNegocio}.
+          </motion.p>
+        </div>
+
+        <div className="mt-14 grid items-stretch gap-6 md:grid-cols-2 md:gap-8 compact:mt-10" style={{ perspective: '1400px' }}>
+          {paquetes.map((p, i) => (
+            <motion.div
+              key={p.nombre}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.9, ease: EASE, delay: i * 0.15 }}
+            >
+              <TiltCard>
+                {p.recomendado ? (
+                  <div className="border-spin h-full rounded-[1.75rem] p-px shadow-[0_30px_100px_-40px_var(--color-accent)]">
+                    <CardBody paquete={p} href={getWhatsappUrl(prospecto, p.mensaje(prospecto.nombreNegocio))} />
+                  </div>
+                ) : (
+                  <div className="h-full rounded-[1.75rem] border border-white/10">
+                    <CardBody paquete={p} href={getWhatsappUrl(prospecto, p.mensaje(prospecto.nombreNegocio))} />
+                  </div>
+                )}
+              </TiltCard>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Inclina la card en 3D siguiendo al mouse. */
+function TiltCard({ children }: { children: ReactNode }) {
+  const rx = useSpring(0, { stiffness: 150, damping: 15 });
+  const ry = useSpring(0, { stiffness: 150, damping: 15 });
+  const reduce = useReducedMotion();
 
   return (
-    <div
-      className="relative w-full min-h-svh flex flex-col items-center justify-center max-sm:px-4 px-[60px] max-sm:py-12 py-20 compact:py-8 overflow-hidden"
-      style={{ perspective: '1200px' }}
+    <motion.div
+      className="h-full"
+      style={{ rotateX: rx, rotateY: ry, transformStyle: 'preserve-3d' }}
+      onPointerMove={(e) => {
+        if (reduce || e.pointerType !== 'mouse') return;
+        const r = e.currentTarget.getBoundingClientRect();
+        rx.set(((e.clientY - r.top) / r.height - 0.5) * -7);
+        ry.set(((e.clientX - r.left) / r.width - 0.5) * 7);
+      }}
+      onPointerLeave={() => {
+        rx.set(0);
+        ry.set(0);
+      }}
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: 'spring', stiffness: 200, damping: 20 }}
     >
-      <motion.h2
-        className="max-sm:text-[28px] text-[48px] compact:text-[36px] font-bold text-white leading-none mb-2 text-center"
-        style={{ fontFamily: 'var(--font-display)' }}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        Elegí tu paquete
-      </motion.h2>
+      {children}
+    </motion.div>
+  );
+}
 
-      <motion.p
-        className="max-sm:text-sm text-lg text-white/60 max-sm:mb-8 mb-12 compact:mb-7 text-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-      >
-        Dos formas de empezar. Una sola meta: más clientes para {nombreNegocio}.
-      </motion.p>
+function CardBody({ paquete, href }: { paquete: Paquete; href: string }) {
+  const { recomendado } = paquete;
+  return (
+    <div
+      className={cn(
+        'relative flex h-full flex-col rounded-[calc(1.75rem-1px)] p-7 sm:p-9 compact:p-7',
+        recomendado ? 'bg-[#0c0c10]' : 'bg-white/[0.02]',
+      )}
+      style={recomendado ? { backgroundImage: 'linear-gradient(180deg, color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 55%)' } : undefined}
+    >
+      <div className="flex items-center justify-between gap-3">
+        <h3 className={cn('text-xl font-semibold sm:text-2xl', recomendado ? 'text-white' : 'text-white/85')}>{paquete.nombre}</h3>
+        {recomendado && (
+          <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white">
+            <Sparkles size={12} aria-hidden /> Recomendado
+          </span>
+        )}
+      </div>
 
-      <div className="grid max-sm:grid-cols-1 grid-cols-2 max-sm:gap-8 gap-8 w-full max-w-[1000px]">
-        {paquetes.map((paquete, i) => {
-          const baseDelay = 0.3 * i;
+      <p className="mt-6 flex items-baseline gap-2">
+        <span className="text-6xl font-bold tracking-tight text-white sm:text-7xl compact:text-6xl">
+          $<CountUp value={paquete.precio} />
+        </span>
+        <span className="text-white/45">USD / mes</span>
+      </p>
+      <p className="mt-3 text-sm leading-relaxed text-white/60">{paquete.notaPrecio}</p>
+
+      <div className="my-6 h-px bg-white/10 compact:my-5" />
+
+      <ul className="flex flex-1 flex-col gap-3.5">
+        {paquete.items.map((item) => {
+          const esExtra = item.startsWith('+ ');
+          const Icon = esExtra ? Plus : Check;
           return (
-            <motion.div
-              key={paquete.nombre}
-              className={cn(
-                'relative rounded-2xl max-sm:p-6 p-10 compact:p-6 flex flex-col bg-navy',
-                paquete.recomendado ? 'border-2 border-rosa' : 'border border-white/15',
-              )}
-              style={{
-                transformStyle: 'preserve-3d',
-                background: paquete.recomendado
-                  ? `linear-gradient(180deg, ${withAlpha(colorTema, 0.08)} 0%, #0a0e27 100%)`
-                  : undefined,
-              }}
-              initial={{ rotateY: i === 0 ? -45 : 45, opacity: 0, x: i === 0 ? -50 : 50 }}
-              animate={{
-                rotateY: 0,
-                opacity: 1,
-                x: 0,
-                boxShadow: paquete.recomendado
-                  ? [`0 0 0px ${withAlpha(colorTema, 0)}`, `0 0 40px ${withAlpha(colorTema, 0.35)}`, `0 0 0px ${withAlpha(colorTema, 0)}`]
-                  : 'none',
-              }}
-              transition={{
-                rotateY: { duration: 0.7, ease: 'easeOut', delay: baseDelay },
-                opacity: { duration: 0.7, ease: 'easeOut', delay: baseDelay },
-                x: { duration: 0.7, ease: 'easeOut', delay: baseDelay },
-                boxShadow: { delay: 1.4, duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
-              }}
-              whileHover={{ scale: 1.02 }}
-            >
-              {paquete.recomendado && (
-                <motion.span
-                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-full bg-rosa px-4 py-1 text-xs font-bold tracking-widest text-white uppercase whitespace-nowrap"
-                  initial={{ opacity: 0, y: 8, scale: 0.8 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ delay: baseDelay + 0.7, type: 'spring', stiffness: 300, damping: 14 }}
-                >
-                  <Sparkles size={14} aria-hidden />
-                  Recomendado
-                </motion.span>
-              )}
-
-              <motion.p
+            <li key={item} className="flex gap-3 text-sm leading-relaxed sm:text-[15px]">
+              <span
                 className={cn(
-                  'max-sm:text-xl text-2xl font-bold mb-2',
-                  paquete.recomendado ? 'text-rosa' : 'text-white/80',
+                  'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full',
+                  esExtra ? 'bg-accent text-white' : 'bg-white/10 text-white/80',
                 )}
-                style={{ fontFamily: 'var(--font-display)' }}
-                initial={{ opacity: 0, x: i === 0 ? -20 : 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: baseDelay + 0.3 }}
               >
-                {paquete.nombre}
-              </motion.p>
-
-              <motion.p
-                className="flex items-baseline gap-1.5 mb-2"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: baseDelay + 0.4 }}
-              >
-                <span className="max-sm:text-4xl text-5xl font-bold text-white" style={{ fontFamily: 'var(--font-display)' }}>
-                  ${paquete.precio}
-                </span>
-                <span className="text-white/40">USD / mes</span>
-              </motion.p>
-
-              <motion.p
-                className="max-sm:text-sm text-base text-white/60 mb-4 compact:mb-3"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: baseDelay + 0.45 }}
-              >
-                {paquete.descripcion}
-              </motion.p>
-
-              <motion.div
-                className={cn('h-px max-sm:mb-4 mb-6 compact:mb-4 w-full origin-left', paquete.recomendado ? 'bg-rosa' : 'bg-white/15')}
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.4, delay: baseDelay + 0.5 }}
-              />
-
-              <div className="flex flex-col max-sm:gap-3 gap-4 compact:gap-3 flex-1">
-                {paquete.items.map((item, j) => {
-                  const esExtra = item.startsWith('+ ');
-                  const Icon = esExtra ? Plus : Check;
-                  return (
-                  <motion.div
-                    key={item}
-                    className="flex items-start max-sm:gap-2 gap-3 max-sm:text-sm text-base"
-                    initial={{ opacity: 0, x: 12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: baseDelay + 0.6 + j * 0.1, duration: 0.35, ease: 'easeOut' }}
-                  >
-                    <Icon size={18} className={cn('shrink-0 mt-0.5', esExtra ? 'text-rosa' : 'text-verde')} />
-                    <span className="text-white/85">{esExtra ? item.slice(2) : item}</span>
-                  </motion.div>
-                  );
-                })}
-              </div>
-
-              <motion.a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  'mt-8 compact:mt-5 inline-flex items-center justify-center gap-2 rounded-full max-sm:px-4 px-6 py-3 max-sm:text-sm font-bold whitespace-nowrap transition-colors',
-                  paquete.recomendado
-                    ? 'bg-rosa text-white'
-                    : 'border border-white/30 text-white hover:border-rosa hover:text-rosa',
-                )}
-                style={{ fontFamily: 'var(--font-display)' }}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: baseDelay + 1, duration: 0.4 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <MessageCircle size={18} aria-hidden />
-                Quiero el {paquete.nombre}
-              </motion.a>
-            </motion.div>
+                <Icon size={12} strokeWidth={3} />
+              </span>
+              <span className={esExtra ? 'text-white' : 'text-white/75'}>{esExtra ? item.slice(2) : item}</span>
+            </li>
           );
         })}
-      </div>
+      </ul>
+
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cn(
+          'group mt-8 flex items-center justify-between gap-3 rounded-full py-2 pl-6 pr-2 text-sm font-semibold transition-colors sm:text-base compact:mt-6',
+          recomendado ? 'bg-accent text-white' : 'border border-white/15 text-white hover:border-white/40',
+        )}
+      >
+        {paquete.cta}
+        <span
+          className={cn(
+            'flex h-10 w-10 items-center justify-center rounded-full transition-transform duration-300 group-hover:rotate-45',
+            recomendado ? 'bg-white text-black' : 'bg-white/10',
+          )}
+        >
+          <ArrowUpRight size={18} />
+        </span>
+      </a>
+
+      <p className="mt-4 text-xs text-gray-400">{NOTA_PAUTA}</p>
     </div>
   );
 }

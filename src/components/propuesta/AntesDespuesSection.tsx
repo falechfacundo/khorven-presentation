@@ -1,158 +1,92 @@
 import { motion } from 'framer-motion';
-import { X, Check } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import type { Prospecto } from '@data/prospectos';
+import { EASE, Eyebrow, RevealText, words } from './ui';
 
 interface AntesDespuesSectionProps {
   prospecto: Prospecto;
 }
 
-const antesItems = [
-  'Consultas respondidas a destiempo',
-  'Contenido sin plan ni frecuencia',
-  'Ads sin optimizar',
-  'Sin métricas claras',
+const cambios = [
+  { antes: 'Consultas respondidas a destiempo', despues: 'Respuesta automática en <1 min' },
+  { antes: 'Contenido sin plan ni frecuencia', despues: '4 reels de alto impacto por mes' },
+  { antes: 'Ads sin optimizar', despues: 'Meta Ads gestionados y optimizados' },
+  { antes: 'Sin métricas claras', despues: 'Reporte mensual de métricas' },
 ];
-
-const despuesItems = [
-  'Respuesta automática en <1 min',
-  '4 reels de alto impacto por mes',
-  'Meta Ads gestionados y optimizados',
-  'Reporte mensual de métricas',
-];
-
-function PanelItem({ text, delay, isBefore }: { text: string; delay: number; isBefore: boolean }) {
-  const Icon = isBefore ? X : Check;
-  return (
-    <motion.div
-      className="flex items-start max-sm:gap-2 gap-3 max-sm:text-sm text-base"
-      initial={{ opacity: 0, x: isBefore ? -12 : 12 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay, duration: 0.35, ease: 'easeOut' }}
-    >
-      <span className="shrink-0 mt-0.5">
-        <Icon size={18} className={isBefore ? 'text-rosa' : 'text-verde'} />
-      </span>
-      <span className={isBefore ? 'text-white/60' : 'text-white/85'}>{text}</span>
-    </motion.div>
-  );
-}
 
 export default function AntesDespuesSection({ prospecto }: AntesDespuesSectionProps) {
   return (
-    <div
-      className="relative w-full min-h-svh flex flex-col items-center justify-center max-sm:px-4 px-[60px] max-sm:py-12 py-20 compact:py-8 overflow-hidden"
-      style={{ perspective: '1200px' }}
-    >
-      <motion.h2
-        className="max-sm:text-[28px] text-[48px] compact:text-[36px] font-bold text-white leading-none mb-2 text-center"
-        style={{ fontFamily: 'var(--font-display)' }}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        Esto es lo que cambia
-      </motion.h2>
+    <section id="cambio" className="relative py-24 sm:py-32 compact:py-16">
+      <div className="mx-auto max-w-7xl px-5 sm:px-10">
+        <Eyebrow index="04">Lo que cambia</Eyebrow>
+        <RevealText
+          items={[...words('En 30 días,'), ...words(prospecto.nombreNegocio, 'font-serif italic font-normal text-accent'), ...words('deja de perder consultas.')]}
+          className="mt-4 max-w-4xl text-[clamp(2rem,4.6vw,4rem)] font-bold leading-[1.02] tracking-[-0.02em] text-white"
+        />
 
-      <motion.p
-        className="max-sm:text-sm text-lg text-white/60 max-sm:mb-6 mb-10 compact:mb-5 text-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-      >
-        En 30 días, {prospecto.nombreNegocio} deja de perder consultas
-      </motion.p>
+        <div className="mt-12 hidden grid-cols-[1fr_auto_1fr] gap-x-8 border-b border-white/10 pb-3 text-[11px] uppercase tracking-[0.25em] md:grid compact:mt-8" style={{ fontFamily: 'var(--font-mono)' }}>
+          <span className="text-white/35">Antes</span>
+          <span className="w-5" />
+          <span className="text-accent">Después</span>
+        </div>
 
-      <div className="grid max-sm:grid-cols-1 grid-cols-2 max-sm:gap-4 gap-8 w-full max-w-[1200px]">
-        <motion.div
-          className="rounded-2xl border border-white/10 max-sm:p-5 p-10 compact:p-6 flex flex-col relative overflow-hidden"
-          style={{ filter: 'grayscale(80%) brightness(0.85)', transformStyle: 'preserve-3d' }}
-          initial={{ rotateY: -45, opacity: 0, x: -50 }}
-          animate={{ rotateY: 0, opacity: 1, x: 0, transition: { duration: 0.7, ease: 'easeOut' } }}
+        <ul className="mt-6 md:mt-0">
+          {cambios.map((c, i) => (
+            <motion.li
+              key={c.antes}
+              className="grid gap-2 border-b border-white/[0.07] py-5 md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-x-8 md:py-7 compact:md:py-5"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ staggerChildren: 0.25, delayChildren: i * 0.08 }}
+            >
+              <motion.span
+                className="relative w-fit text-base text-white/40 sm:text-xl"
+                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.4 } } }}
+              >
+                {c.antes}
+                <motion.span
+                  className="absolute left-0 top-1/2 h-px w-full origin-left bg-white/50"
+                  variants={{ hidden: { scaleX: 0 }, visible: { scaleX: 1, transition: { duration: 0.6, ease: EASE, delay: 0.3 } } }}
+                />
+              </motion.span>
+
+              <motion.span
+                className="hidden text-accent md:block"
+                variants={{ hidden: { opacity: 0, x: -10 }, visible: { opacity: 1, x: 0, transition: { duration: 0.4 } } }}
+              >
+                <ArrowRight size={20} />
+              </motion.span>
+
+              <motion.span
+                className="text-xl font-semibold text-white sm:text-2xl"
+                variants={{
+                  hidden: { opacity: 0, y: 12, filter: 'blur(6px)' },
+                  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: EASE } },
+                }}
+              >
+                {c.despues}
+              </motion.span>
+            </motion.li>
+          ))}
+        </ul>
+
+        <motion.p
+          className="mt-14 text-center text-[clamp(1.8rem,4vw,3.4rem)] font-bold tracking-[-0.02em] text-white compact:mt-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ duration: 0.9, ease: EASE }}
         >
-          <motion.p
-            className="max-sm:text-2xl text-[32px] font-bold text-white/40 max-sm:mb-2 mb-3"
-            style={{ fontFamily: 'var(--font-display)' }}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
+          No es magia.{' '}
+          <span
+            className="bg-clip-text font-serif font-normal italic text-transparent"
+            style={{ backgroundImage: 'linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 40%, white))' }}
           >
-            ANTES
-          </motion.p>
-          <motion.div
-            className="h-px bg-rosa/20 max-sm:mb-4 mb-8 compact:mb-4 w-full origin-left"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-          />
-          <div className="flex flex-col max-sm:gap-3 gap-5 compact:gap-3 flex-1">
-            {antesItems.map((item, i) => (
-              <PanelItem key={item} text={item} delay={0.4 + i * 0.1} isBefore />
-            ))}
-          </div>
-          <motion.p
-            className="max-sm:text-sm text-base text-white/50 italic mt-auto pt-4 leading-relaxed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.85, duration: 0.4 }}
-          >
-            "Las consultas llegan,
-            <br />
-            pero nadie las convierte"
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          className="rounded-2xl border-2 border-verde max-sm:p-5 p-10 compact:p-6 flex flex-col relative overflow-hidden"
-          style={{
-            background: 'linear-gradient(180deg, hsla(81,85%,56%,0.06) 0%, #0a0e27 100%)',
-            boxShadow: 'inset 0 0 60px hsla(81,85%,56%,0.08)',
-            transformStyle: 'preserve-3d',
-          }}
-          initial={{ rotateY: 45, opacity: 0, x: 50 }}
-          animate={{ rotateY: 0, opacity: 1, x: 0, transition: { duration: 0.7, ease: 'easeOut', delay: 0.3 } }}
-        >
-          <motion.p
-            className="max-sm:text-2xl text-[32px] font-bold text-verde max-sm:mb-2 mb-3"
-            style={{ fontFamily: 'var(--font-display)' }}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.6 }}
-          >
-            DESPUÉS
-          </motion.p>
-          <motion.div
-            className="h-0.5 bg-verde max-sm:mb-4 mb-8 compact:mb-4 w-full origin-left"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.4, delay: 0.7 }}
-          />
-          <div className="flex flex-col max-sm:gap-3 gap-5 compact:gap-3 flex-1">
-            {despuesItems.map((item, i) => (
-              <PanelItem key={item} text={item} delay={0.8 + i * 0.1} isBefore={false} />
-            ))}
-          </div>
-          <motion.p
-            className="max-sm:text-sm text-base text-verde/70 italic mt-auto pt-4 leading-relaxed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.25, duration: 0.4 }}
-          >
-            "Contenido + automatización =
-            <br />
-            cada consulta tiene respuesta"
-          </motion.p>
-        </motion.div>
+            Es sistema.
+          </span>
+        </motion.p>
       </div>
-
-      <motion.p
-        className="max-sm:text-lg text-2xl font-bold text-white text-center max-sm:mt-6 mt-10 compact:mt-5"
-        style={{ fontFamily: 'var(--font-display)' }}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.8, duration: 0.5 }}
-      >
-        No es magia. Es sistema.
-      </motion.p>
-    </div>
+    </section>
   );
 }

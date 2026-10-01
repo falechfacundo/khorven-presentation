@@ -1,20 +1,19 @@
-import { useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Film } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Play } from 'lucide-react';
+import { useRef } from 'react';
 import type { Prospecto } from '@data/prospectos';
-import { withAlpha } from '@lib/color';
+import { EASE, Eyebrow, FadeUp, RevealText, SpotlightCard, words } from './ui';
 
 interface PlanSectionProps {
   prospecto: Prospecto;
 }
 
-type Visual = 'videos' | 'calendar' | 'chart';
+type Visual = 'reels' | 'calendar' | 'chart';
 
 interface Semana {
   id: string;
   label: string;
-  subtitle: string;
-  accent: 'rosa' | 'verde';
+  title: string;
   hacemos: string[];
   ves: string[];
   visual: Visual;
@@ -23,22 +22,20 @@ interface Semana {
 const semanas: Semana[] = [
   {
     id: 'w1',
-    label: 'SEMANA 1',
-    subtitle: 'Auditoría + primeros reels',
-    accent: 'rosa',
+    label: 'Semana 1',
+    title: 'Auditoría + primeros reels',
     hacemos: [
       'Auditamos tus redes y tus ads actuales',
       'Grabamos y editamos los primeros reels',
       'Configuramos Meta Ads con objetivos claros',
     ],
     ves: ['Reels publicados en tus redes', 'Campañas activas', 'Primeras métricas de alcance'],
-    visual: 'videos',
+    visual: 'reels',
   },
   {
     id: 'w2',
-    label: 'SEMANA 2',
-    subtitle: 'Calendario + automatización',
-    accent: 'verde',
+    label: 'Semana 2',
+    title: 'Calendario + automatización',
     hacemos: [
       'Armamos el calendario estratégico',
       'Mapeamos cómo te llegan las consultas',
@@ -49,384 +46,201 @@ const semanas: Semana[] = [
   },
   {
     id: 'w3-4',
-    label: 'SEMANA 3-4',
-    subtitle: 'Optimización + reporte',
-    accent: 'rosa',
-    hacemos: [
-      'Optimizamos según lo que funciona',
-      'Ajustamos campañas y creativos',
-      '1 call de seguimiento',
-    ],
+    label: 'Semanas 3 – 4',
+    title: 'Optimización + reporte',
+    hacemos: ['Optimizamos según lo que funciona', 'Ajustamos campañas y creativos', '1 call de seguimiento'],
     ves: ['Resultados consistentes', 'Reporte mensual de métricas', 'Plan claro para el mes 2'],
     visual: 'chart',
   },
 ];
 
-const accentClasses = {
-  rosa: { border: 'border-rosa', text: 'text-rosa' },
-  verde: { border: 'border-verde', text: 'text-verde' },
-} as const;
+export default function PlanSection({ prospecto }: PlanSectionProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.85', 'end 0.6'] });
+  const lineWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
-const dayLabels = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
-
-function VideoFrames({ delay, colorTema }: { delay: number; colorTema: string }) {
   return (
-    <div className="flex gap-2 my-2">
+    <section id="plan" className="relative py-24 sm:py-32 compact:py-16">
+      <div className="mx-auto max-w-7xl px-5 sm:px-10">
+        <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div>
+            <Eyebrow index="03">Tu primer mes</Eyebrow>
+            <RevealText
+              items={[...words('30 días para'), ...words('ver resultados.', 'font-serif italic font-normal text-accent')]}
+              className="mt-4 text-[clamp(2rem,4.6vw,4rem)] font-bold leading-[1.02] tracking-[-0.02em] text-white"
+            />
+          </div>
+          <FadeUp delay={0.15}>
+            <p className="max-w-sm text-base leading-relaxed text-white/55 lg:text-right">
+              Así trabajamos con {prospecto.nombreNegocio} desde el día uno. Al final del mes sabés qué funcionó y cuánto
+              te costó cada consulta.
+            </p>
+          </FadeUp>
+        </div>
+
+        {/* Línea de tiempo que se llena con el scroll */}
+        <div ref={ref} className="relative mt-14 hidden h-px bg-white/10 md:block compact:mt-10">
+          <motion.div className="absolute inset-y-0 left-0 bg-accent" style={{ width: lineWidth }} />
+          {semanas.map((s, i) => (
+            <span
+              key={s.id}
+              className="absolute top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full border border-accent bg-ink"
+              style={{ left: `calc(${(i * 100) / 3}% + 1.5rem)` }}
+            />
+          ))}
+        </div>
+
+        <div className="-mx-5 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:px-0 md:pb-0 compact:mt-6">
+          {semanas.map((s, i) => (
+            <motion.div
+              key={s.id}
+              className="w-[82%] shrink-0 snap-center md:w-auto"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.9, ease: EASE, delay: i * 0.12 }}
+            >
+              <SpotlightCard className="h-full p-6 compact:p-5">
+                <div className="relative flex h-full flex-col">
+                  <p className="text-[11px] uppercase tracking-[0.25em] text-accent" style={{ fontFamily: 'var(--font-mono)' }}>
+                    {s.label}
+                  </p>
+                  <h3 className="mt-2 text-xl font-semibold text-white">{s.title}</h3>
+
+                  <div className="my-5 compact:my-4">
+                    <SemanaVisual visual={s.visual} />
+                  </div>
+
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-white/35" style={{ fontFamily: 'var(--font-mono)' }}>
+                    Qué hacemos
+                  </p>
+                  <ul className="mt-2 space-y-1.5">
+                    {s.hacemos.map((item) => (
+                      <li key={item} className="flex gap-2.5 text-sm text-white/65">
+                        <span className="mt-[0.55rem] h-1 w-1 shrink-0 rounded-full bg-white/30" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="my-4 h-px bg-white/[0.07]" />
+
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-white/35" style={{ fontFamily: 'var(--font-mono)' }}>
+                    Qué ves vos
+                  </p>
+                  <ul className="mt-2 space-y-1.5">
+                    {s.ves.map((item) => (
+                      <li key={item} className="flex gap-2.5 text-sm text-white/85">
+                        <span className="mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </SpotlightCard>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SemanaVisual({ visual }: { visual: Visual }) {
+  if (visual === 'reels') return <Reels />;
+  if (visual === 'calendar') return <Calendar />;
+  return <Chart />;
+}
+
+function Reels() {
+  return (
+    <div className="flex h-28 gap-2.5 compact:h-24">
       {[0, 1, 2].map((i) => (
         <motion.div
           key={i}
-          className="flex-1 h-14 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center"
-          initial={{ opacity: 0, y: 12, scale: 0.85 }}
-          animate={{
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            boxShadow: [
-              `0 0 0px ${withAlpha(colorTema, 0)}`,
-              `0 0 12px ${withAlpha(colorTema, 0.3)}`,
-              `0 0 0px ${withAlpha(colorTema, 0)}`,
-            ],
+          className="relative flex-1 overflow-hidden rounded-xl border border-white/10"
+          style={{
+            background: `linear-gradient(${160 + i * 20}deg, color-mix(in srgb, var(--color-accent) ${30 - i * 8}%, transparent), rgb(255 255 255 / 0.03))`,
           }}
-          transition={{
-            y: { delay: delay + i * 0.1, type: 'spring', stiffness: 300, damping: 12 },
-            opacity: { delay: delay + i * 0.1, duration: 0.2 },
-            scale: { delay: delay + i * 0.1, type: 'spring', stiffness: 300, damping: 12 },
-            boxShadow: { delay: delay + 0.4 + i * 0.1, duration: 1.5, repeat: Infinity, ease: 'easeInOut' },
-          }}
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 + i * 0.1, duration: 0.6, ease: EASE }}
         >
-          <Film size={20} className="text-white/50" />
+          <Play size={16} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 fill-white/80 text-white/80" />
+          <div className="absolute inset-x-2 bottom-2 h-0.5 overflow-hidden rounded-full bg-white/15">
+            <motion.div
+              className="h-full bg-white/80"
+              initial={{ width: '0%' }}
+              whileInView={{ width: '100%' }}
+              viewport={{ once: false }}
+              transition={{ duration: 4 + i, repeat: Infinity, ease: 'linear', delay: i * 0.6 }}
+            />
+          </div>
         </motion.div>
       ))}
     </div>
   );
 }
 
-function CalendarGrid({ delay }: { delay: number }) {
-  const weeks = [
-    [true, true, false, true, false, false, false],
-    [false, true, false, true, true, false, false],
-  ];
-  const dotColors = ['bg-verde', 'bg-rosa'];
-
+function Calendar() {
+  const posts = new Set([1, 3, 8, 10, 11, 15, 17, 19]);
   return (
-    <div className="my-2">
-      <div className="grid grid-cols-7 gap-1 mb-1">
-        {dayLabels.map((d, i) => (
-          <span key={i} className="text-[10px] text-white/30 text-center font-medium">
-            {d}
-          </span>
-        ))}
-      </div>
-      {weeks.map((week, wi) => (
-        <div key={wi} className="grid grid-cols-7 gap-1 mb-1">
-          {week.map((hasDot, di) => {
-            const dotIndex = wi * 7 + di;
-            return (
-              <motion.div
-                key={di}
-                className="h-4 rounded flex items-center justify-center"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: delay + 0.05 + dotIndex * 0.035, duration: 0.25, ease: 'easeOut' }}
-              >
-                {hasDot && (
-                  <motion.div
-                    className={`w-1.5 h-1.5 rounded-full ${dotColors[dotIndex % 2]}`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: [0, 1, 0.7] }}
-                    transition={{ delay: delay + 0.05 + dotIndex * 0.035, duration: 0.3 }}
-                  />
-                )}
-              </motion.div>
-            );
-          })}
-        </div>
+    <div className="grid h-28 grid-cols-7 content-center gap-x-1.5 gap-y-1 compact:h-24">
+      {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, i) => (
+        <span key={i} className="text-center text-[10px] text-white/30" style={{ fontFamily: 'var(--font-mono)' }}>
+          {d}
+        </span>
+      ))}
+      {Array.from({ length: 21 }, (_, i) => (
+        <motion.span
+          key={i}
+          className="flex h-6 items-center justify-center rounded-md border border-white/[0.06] compact:h-5"
+          initial={{ opacity: 0, scale: 0.6 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 + i * 0.025, duration: 0.3 }}
+        >
+          {posts.has(i) && <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_var(--color-accent)]" />}
+        </motion.span>
       ))}
     </div>
   );
 }
 
-function GrowthChart({ delay }: { delay: number }) {
-  const points = [
-    { x: 5, y: 45, label: 'S1' },
-    { x: 30, y: 38, label: 'S2' },
-    { x: 55, y: 28, label: 'S3' },
-    { x: 80, y: 18, label: 'S4' },
-    { x: 105, y: 10, label: 'S5' },
-    { x: 115, y: 7, label: 'S6' },
-  ];
-  const lineDuration = 1.2;
-  const totalX = 110;
-
+function Chart() {
+  const d = 'M4,58 C30,54 40,46 60,42 S95,30 115,24 S150,10 176,6';
   return (
-    <div className="my-2 h-16">
-      <svg viewBox="0 0 120 50" className="w-full h-full">
-        <motion.path
-          d="M5,45 L30,38 L55,28 L80,18 L105,10 L115,7"
-          stroke="currentColor"
-          className="text-verde"
-          strokeWidth="2"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ delay, duration: lineDuration, ease: 'easeOut' }}
-        />
-        {points.map((pt) => {
-          const dotDelay = delay + ((pt.x - 5) / totalX) * lineDuration + 0.05;
-          return (
-            <g key={pt.label}>
-              <motion.circle
-                cx={pt.x}
-                cy={pt.y}
-                r="3"
-                className="fill-verde"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: dotDelay, duration: 0.25, ease: 'easeOut' }}
-              />
-              <motion.text
-                x={pt.x}
-                y={pt.y - 7}
-                className="fill-white/30 text-[6px]"
-                textAnchor="middle"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: dotDelay + 0.05, duration: 0.2 }}
-              >
-                {pt.label}
-              </motion.text>
-            </g>
-          );
-        })}
-      </svg>
-    </div>
-  );
-}
-
-function SemanaVisual({ visual, delay, colorTema }: { visual: Visual; delay: number; colorTema: string }) {
-  if (visual === 'videos') return <VideoFrames delay={delay} colorTema={colorTema} />;
-  if (visual === 'calendar') return <CalendarGrid delay={delay} />;
-  return <GrowthChart delay={delay} />;
-}
-
-export default function PlanSection({ prospecto }: PlanSectionProps) {
-  const { nombreNegocio, colorTema } = prospecto;
-  const [activeWeek, setActiveWeek] = useState(0);
-  const [swipeDir, setSwipeDir] = useState(1);
-  const touchStart = useRef<{ x: number } | null>(null);
-  const active = semanas[activeWeek];
-
-  const goTo = (i: number) => {
-    setSwipeDir(i > activeWeek ? 1 : -1);
-    setActiveWeek(i);
-  };
-
-  return (
-    <div
-      className="relative w-full min-h-svh flex flex-col items-center justify-center max-sm:px-4 px-10 max-sm:py-12 py-20 compact:py-8 overflow-hidden"
-      style={{ perspective: '1200px' }}
-    >
-      <motion.h2
-        className="max-sm:text-[28px] text-[56px] compact:text-[40px] font-bold text-white leading-none mb-2 text-center"
-        style={{ fontFamily: 'var(--font-display)' }}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        Tu primer mes
-      </motion.h2>
-
-      <motion.p
-        className="max-sm:text-sm text-[20px] compact:text-base text-white/50 max-sm:mb-4 mb-8 compact:mb-4 text-center"
+    <svg viewBox="0 0 180 64" className="h-28 w-full overflow-visible compact:h-24" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="plan-area" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="var(--color-accent)" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {[16, 32, 48].map((y) => (
+        <line key={y} x1="0" x2="180" y1={y} y2={y} stroke="white" strokeOpacity="0.05" />
+      ))}
+      <motion.path
+        d={`${d} L176,64 L4,64 Z`}
+        fill="url(#plan-area)"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.15 }}
-      >
-        Así trabajamos con {nombreNegocio} en los primeros 30 días
-      </motion.p>
-
-      <div className="max-sm:hidden grid grid-cols-3 gap-6 w-full max-w-[1200px]">
-        {semanas.map((semana, i) => {
-          const cardDelay = i * 0.15;
-          const accent = accentClasses[semana.accent];
-
-          return (
-            <motion.div
-              key={semana.id}
-              className={`flex flex-col rounded-2xl border-2 ${accent.border} bg-navy`}
-              initial={{ rotateY: 90, opacity: 0 }}
-              animate={{ rotateY: 0, opacity: 1, transition: { duration: 0.5, ease: 'easeOut', delay: cardDelay } }}
-              whileHover={{
-                boxShadow:
-                  semana.accent === 'rosa'
-                    ? `0 0 30px ${withAlpha(colorTema, 0.3)}`
-                    : '0 0 30px hsla(81, 85%, 56%, 0.3)',
-              }}
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              <div className="flex flex-col h-full p-5 compact:p-4">
-                <motion.span
-                  className="text-xs font-bold text-white/50 tracking-wider mb-2"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 + cardDelay, duration: 0.3 }}
-                >
-                  {semana.label}
-                </motion.span>
-
-                <motion.p
-                  className={`text-sm md:text-base font-bold ${accent.text} mb-3`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 + cardDelay, duration: 0.3 }}
-                >
-                  {semana.subtitle}
-                </motion.p>
-
-                <div className="flex flex-col gap-2 mb-2">
-                  <motion.span
-                    className="text-[11px] text-white/40 font-medium uppercase tracking-wider"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4 + cardDelay, duration: 0.3 }}
-                  >
-                    Qué hacemos
-                  </motion.span>
-                  {semana.hacemos.map((item, j) => (
-                    <motion.div
-                      key={item}
-                      className="flex items-start gap-2 text-[12px] text-white/70"
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.48 + cardDelay + j * 0.06, duration: 0.3 }}
-                    >
-                      <span className="text-white/30 mt-0.5 shrink-0">•</span>
-                      <span>{item}</span>
-                    </motion.div>
-                  ))}
-                </div>
-
-                <SemanaVisual visual={semana.visual} delay={0.72 + cardDelay} colorTema={colorTema} />
-
-                <motion.div
-                  className="my-2 h-px bg-white/10"
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.85 + cardDelay, duration: 0.4 }}
-                />
-
-                <div className="flex flex-col gap-1">
-                  <motion.span
-                    className="text-[11px] font-bold text-verde uppercase tracking-wider"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.9 + cardDelay, duration: 0.3 }}
-                  >
-                    Qué ves vos
-                  </motion.span>
-                  {semana.ves.map((item, j) => (
-                    <motion.div
-                      key={item}
-                      className="flex items-start gap-2 text-[12px] text-white/80"
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.98 + cardDelay + j * 0.06, duration: 0.3 }}
-                    >
-                      <span className="text-verde mt-0.5 shrink-0">✓</span>
-                      <span>{item}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      <div className="sm:hidden flex flex-col w-full max-w-[400px]">
-        <div
-          className="relative w-full touch-pan-y"
-          onTouchStart={(e) => {
-            touchStart.current = { x: e.touches[0].clientX };
-          }}
-          onTouchEnd={(e) => {
-            if (!touchStart.current) return;
-            const dx = e.changedTouches[0].clientX - touchStart.current.x;
-            touchStart.current = null;
-            if (dx < -40 && activeWeek < semanas.length - 1) goTo(activeWeek + 1);
-            else if (dx > 40 && activeWeek > 0) goTo(activeWeek - 1);
-          }}
-        >
-          <AnimatePresence mode="wait" custom={swipeDir}>
-            <motion.div
-              key={activeWeek}
-              custom={swipeDir}
-              variants={{
-                enter: (dir: number) => ({ x: dir * 80, opacity: 0 }),
-                center: { x: 0, opacity: 1 },
-                exit: (dir: number) => ({ x: dir * -80, opacity: 0 }),
-              }}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ type: 'tween', duration: 0.25, ease: 'easeOut' }}
-              className={`flex flex-col w-full rounded-2xl border-2 ${accentClasses[active.accent].border} bg-navy p-6`}
-            >
-              <span className="text-[10px] font-bold text-white/50 tracking-wider mb-1">{active.label}</span>
-              <p className={`text-xs font-bold ${accentClasses[active.accent].text} mb-2`}>{active.subtitle}</p>
-
-              <div className="flex flex-col gap-1 mb-2">
-                <span className="text-[10px] text-white/40 font-medium uppercase tracking-wider">Qué hacemos</span>
-                {active.hacemos.map((item) => (
-                  <div key={item} className="flex items-start gap-1.5 text-[11px] text-white/70">
-                    <span className="text-white/30 mt-0.5 shrink-0">•</span>
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              <SemanaVisual visual={active.visual} delay={0} colorTema={colorTema} />
-
-              <div className="my-2.5 h-px bg-white/10" />
-
-              <div className="flex flex-col gap-2">
-                <span className="text-[10px] font-bold text-verde uppercase tracking-wider">Qué ves vos</span>
-                {active.ves.map((item) => (
-                  <div key={item} className="flex items-start gap-1.5 text-[11px] text-white/80">
-                    <span className="text-verde mt-0.5 shrink-0">✓</span>
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        <div className="flex justify-center items-center gap-2 py-3">
-          {semanas.map((semana, i) => (
-            <button
-              key={semana.id}
-              onClick={() => goTo(i)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                i === activeWeek ? 'bg-rosa scale-125' : 'bg-white/30'
-              }`}
-              aria-label={`Ver ${semana.label.toLowerCase()}`}
-            />
-          ))}
-        </div>
-      </div>
-
-      <motion.p
-        className="max-sm:mt-3 mt-8 compact:mt-4 text-center max-w-[800px] max-sm:text-xs text-sm md:text-base text-white/40 leading-relaxed"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.6, duration: 0.5 }}
-      >
-        Al final del mes sabés qué funcionó, cuánto te costó cada consulta
-        <br className="max-sm:hidden" /> y cuál es el próximo paso para seguir creciendo.
-      </motion.p>
-    </div>
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 1, duration: 0.8 }}
+      />
+      <motion.path
+        d={d}
+        fill="none"
+        stroke="var(--color-accent)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.3, duration: 1.4, ease: 'easeInOut' }}
+      />
+    </svg>
   );
 }

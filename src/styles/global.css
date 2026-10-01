@@ -6,6 +6,10 @@
 @custom-variant compact (@media (min-width: 40rem) and (max-height: 820px));
 
 @theme {
+	/* Acento de las propuestas: se sobreescribe con el colorTema de cada prospecto */
+	--color-accent: hsl(346, 99%, 62%);
+	--color-ink: #060608;
+	--font-serif: 'Instrument Serif', Georgia, serif;
 	--color-rosa: hsl(346, 99%, 62%);
 	--color-rosa-hover: hsl(346, 99%, 55%);
 	--color-rosa-glow: hsla(346, 99%, 62%, 0.3);
@@ -158,4 +162,53 @@
 
 	.animate-float { animation: float 6s ease-in-out infinite; }
 	.animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+}
+
+/* ── Propuestas ─────────────────────────────────────────── */
+@property --angle {
+	syntax: '<angle>';
+	initial-value: 0deg;
+	inherits: false;
+}
+
+@keyframes spin-angle {
+	to { --angle: 360deg; }
+}
+
+@keyframes marquee {
+	to { transform: translateX(-50%); }
+}
+
+@layer utilities {
+	/* Borde con brillo giratorio (usar en un wrapper con padding de 1px) */
+	.border-spin {
+		background: conic-gradient(
+			from var(--angle),
+			transparent 0%,
+			var(--color-accent) 10%,
+			transparent 28%,
+			transparent 50%,
+			color-mix(in srgb, var(--color-accent) 60%, white) 60%,
+			transparent 78%
+		);
+		animation: spin-angle 6s linear infinite;
+	}
+
+	.animate-marquee { animation: marquee 40s linear infinite; }
+
+	.bg-grid {
+		background-image:
+			linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+			linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+		background-size: 72px 72px;
+	}
+
+	.text-outline {
+		color: transparent;
+		-webkit-text-stroke: 1px rgb(255 255 255 / 0.12);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.border-spin, .animate-marquee { animation: none; }
 }
